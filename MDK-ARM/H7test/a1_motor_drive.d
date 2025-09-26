@@ -1,5 +1,5 @@
 h7test\a1_motor_drive.o: ..\Core\Src\A1_motor_drive.c
-h7test\a1_motor_drive.o: ..\Core\Src\A1_motor_drive.h
+h7test\a1_motor_drive.o: ../Core/Inc/A1_motor_drive.h
 h7test\a1_motor_drive.o: ../Core/Inc/motor_msg.h
 h7test\a1_motor_drive.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdint.h
 h7test\a1_motor_drive.o: ../Core/Inc/motor_msg.h

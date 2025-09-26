@@ -24,7 +24,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "A1_motor_drive.h"
+#include "motor_msg.h"
+#include "joint.h"
+#include <stdio.h>
+#include "calc.h"
+#include "key_state_machine.h"
+#include "main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +51,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint8_t cstate;
+uint8_t cmode;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,13 +100,24 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
-  MX_UART8_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
-  MX_UART7_Init();
+  MX_UART4_Init();
   /* USER CODE BEGIN 2 */
+	
+	while (fabsf(zero_group4_ID1) <= 1e-6) 
+	{
+		//group1
+			// 读取ID0零点
+			go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
+			unitreeA1_rxtx(&huart1, 4);
+			zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
+		  HAL_Delay(1);
+	}
+	HAL_TIM_Base_Start_IT(&htim2);
 
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,12 +127,67 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		uint8_t Data[5] = {0x00,0x01,0x02,0x03,0x04};
-		HAL_UART_Transmit(&huart8,Data,5,1);
-		HAL_Delay(1);
+//		uint8_t Data[5] = {0x00,0x01,0x02,0x03,0x04};
+//		HAL_UART_Transmit(&huart1,Data,5,1);
+//		HAL_Delay(1);
+		
+		cstate = Key_GetTaskState();
+		cmode = Key_GetCurrentMode();
+	
+		if (cstate) {
+      //刷新标志位，做相关计算等  
+			if(cmode == 0 && zero_init == 1)
+			{
+			// 	zero_group1_ID0 = 0.0f;
+			// 	zero_group1_ID1 = 0.0f;
+
+			// 	zero_group2_ID0 = 0.0f;
+			// 	zero_group2_ID1 = 0.0f;
+
+			// 	zero_group3_ID0 = 0.0f;
+			// 	zero_group3_ID1 = 0.0f;
+				
+			 	zero_group4_ID0 = 0.0f;
+			 	zero_group4_ID1 = 0.0f;
+			
+			// 	zero_init = 0;
+			}
+			//Joint_Zero_init_Type1();
+			while (fabsf(zero_group4_ID0) <= 1e-6) 
+			{
+					//group1
+					// 读取ID0零点
+					go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
+					unitreeA1_rxtx(&huart1, 4);
+					zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
+					HAL_Delay(1);
+			}
+			Task_Execute();
+			
+//			if (data_logging)
+//				{
+//						calculate_errors(motor_angle[6][step_mode_3], motor_omega[6][step_mode_3]);
+//					if(step_mode_3 == STEP_NUM)
+//					{
+//						data_logging = 0;
+//					}
+//				}
+			
+			HAL_Delay(10);
+    }
+		else
+		{
+			motor_relax();
+//			modify_changeid_cmd(&MotorA1_send_group1,10);
+//			unitreeA1_rxtx(&huart1,1);
+//			HAL_Delay(10);
+				
+		}
+	}
+		
   }
   /* USER CODE END 3 */
-}
+
 
 /**
   * @brief System Clock Configuration
@@ -175,6 +248,14 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+
+	if (htim->Instance == TIM2)
+  {
+		Key_Process();
+	}
+}
 
 /* USER CODE END 4 */
 

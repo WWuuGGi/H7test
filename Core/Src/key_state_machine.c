@@ -217,12 +217,12 @@ void Task_Execute(void) {
 							//step_mode_3 = 0;
 							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
 							Pose end_pose = {0.25f, 0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
-							switch(turn)
-							{
-								case 1:
-									start_pose.data[0] = 0.0f;
-									start_pose.data[1] = 0.0f;
-							}
+//							switch(turn)
+//							{
+//								case 1:
+//									start_pose.data[0] = 0.0f;
+//									start_pose.data[1] = 0.0f;
+//							}
 							
 							// 初始速度和加速度为零
 							Velocity start_vel = {0};

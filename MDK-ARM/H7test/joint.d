@@ -39,3 +39,11 @@ h7test\joint.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h
 h7test\joint.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h
 h7test\joint.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h
 h7test\joint.o: ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
+h7test\joint.o: ../Core/Inc/A1_motor_drive.h
+h7test\joint.o: ../Core/Inc/motor_msg.h
+h7test\joint.o: ../Core/Inc/motor_msg.h
+h7test\joint.o: ../Core/Inc/usart.h
+h7test\joint.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
+h7test\joint.o: ../Core/Inc/gom_protocol.h
+h7test\joint.o: ../Core/Inc/crc_ccitt.h
+h7test\joint.o: ../Core/Inc/calc.h

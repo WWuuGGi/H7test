@@ -1,5 +1,11 @@
 --cpu Cortex-M7.fp.dp
 "h7test\startup_stm32h743xx.o"
+"h7test\a1_motor_drive.o"
+"h7test\calc.o"
+"h7test\crc_ccitt.o"
+"h7test\gom_protocol.o"
+"h7test\joint.o"
+"h7test\key_state_machine.o"
 "h7test\main.o"
 "h7test\gpio.o"
 "h7test\tim.o"
@@ -27,7 +33,7 @@
 "h7test\stm32h7xx_hal_uart.o"
 "h7test\stm32h7xx_hal_uart_ex.o"
 "h7test\system_stm32h7xx.o"
---strict --scatter "H7test\H7test.sct"
+--library_type=microlib --strict --scatter "H7test\H7test.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "H7test.map" -o H7test\H7test.axf
