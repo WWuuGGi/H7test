@@ -345,14 +345,14 @@ void motor_relax(void)
 	unitreeA1_rxtx(&huart1,2);
 
 	modify_torque_cmd(&MotorA1_send_group3,0, 0.0f);
-	unitreeA1_rxtx(&huart1,2);
+	unitreeA1_rxtx(&huart1,3);
 	modify_torque_cmd(&MotorA1_send_group3,1, 0.0f);
-	unitreeA1_rxtx(&huart1,2);
+	unitreeA1_rxtx(&huart1,3);
 	
 	go_torque_cmd(&Motor_go_send_group4,0,0.0f);
-	unitreeA1_rxtx(&huart2,3);
+	unitreeA1_rxtx(&huart1,4);
 	go_torque_cmd(&Motor_go_send_group4,1,0.0f);
-	unitreeA1_rxtx(&huart2,3);
+	unitreeA1_rxtx(&huart1,4);
 
 }
 

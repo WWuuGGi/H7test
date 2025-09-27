@@ -1,6 +1,6 @@
 #include "calc.h"
 
-const float32_t mass_ee = 2.0f;
+const float32_t mass_ee = 3.0f;
 const float32_t Ixx_ee = 0.1016f;
 const float32_t Iyy_ee = 0.165f;
 const float32_t Izz_ee = 0.165f;

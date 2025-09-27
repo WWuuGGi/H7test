@@ -21,8 +21,8 @@ static KeyTypeDef key3 = {K3_GPIO_Port, K3_Pin, KEY_STATE_IDLE, 0, 0, 0, 0, KEY_
 static KeyTypeDef key4 = {K4_GPIO_Port, K4_Pin, KEY_STATE_IDLE, 0, 0, 0, 0, KEY_EVENT_NONE,0,0};
 
 // 全局变量
-uint8_t task_running = 0;    // 任务运行标志
-uint8_t current_mode = 0;    // 当前模式
+static uint8_t task_running = 0;    // 任务运行标志
+static uint8_t current_mode = 0;    // 当前模式
 
 // 函数声明
 static uint8_t Key_ReadPin(KeyTypeDef* key);
@@ -217,12 +217,12 @@ void Task_Execute(void) {
 							//step_mode_3 = 0;
 							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
 							Pose end_pose = {0.25f, 0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
-							switch(turn)
-							{
-								case 1:
-									start_pose.data[0] = 0.0f;
-									start_pose.data[1] = 0.0f;
-							}
+//							switch(turn)
+//							{
+//								case 1:
+//									start_pose.data[0] = 0.0f;
+//									start_pose.data[1] = 0.0f;
+//							}
 							
 							// 初始速度和加速度为零
 							Velocity start_vel = {0};

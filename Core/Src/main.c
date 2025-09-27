@@ -109,7 +109,7 @@ int main(void)
 	while (fabsf(zero_group4_ID1) <= 1e-6) 
 	{
 		//group1
-			// ¶ÁÈ¡ID0Áãµã
+			// ï¿½ï¿½È¡ID0ï¿½ï¿½ï¿½
 			go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
 			unitreeA1_rxtx(&huart1, 4);
 			zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
@@ -135,7 +135,7 @@ int main(void)
 		cmode = Key_GetCurrentMode();
 	
 		if (cstate) {
-      //Ë¢ÐÂ±êÖ¾Î»£¬×öÏà¹Ø¼ÆËãµÈ  
+      //Ë¢ï¿½Â±ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½  
 			if(cmode == 0 && zero_init == 1)
 			{
 			// 	zero_group1_ID0 = 0.0f;
@@ -153,10 +153,10 @@ int main(void)
 			// 	zero_init = 0;
 			}
 			//Joint_Zero_init_Type1();
-			while (fabsf(zero_group4_ID0) <= 1e-6) 
+			while (fabsf(zero_group4_ID1) <= 1e-6) 
 			{
 					//group1
-					// ¶ÁÈ¡ID0Áãµã
+					//
 					go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
 					unitreeA1_rxtx(&huart1, 4);
 					zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
@@ -185,9 +185,8 @@ int main(void)
 		}
 	}
 		
-  }
   /* USER CODE END 3 */
-
+}
 
 /**
   * @brief System Clock Configuration
