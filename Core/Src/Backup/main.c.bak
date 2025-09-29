@@ -40,7 +40,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define BroadAllMotorID 0xBB
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +53,11 @@
 /* USER CODE BEGIN PV */
 uint8_t cstate;
 uint8_t cmode;
+uint32_t now1;
+uint32_t now2;
+uint32_t del_t;
+uint8_t j;
+uint8_t k;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,21 +107,29 @@ int main(void)
   MX_TIM2_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
-  MX_USART3_UART_Init();
   MX_UART4_Init();
+  MX_UART5_Init();
   /* USER CODE BEGIN 2 */
 	
-	while (fabsf(zero_group4_ID1) <= 1e-6) 
-	{
-		//group1
-			// ��ȡID0���
-			go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
-			unitreeA1_rxtx(&huart1, 4);
-			zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
-		  HAL_Delay(1);
-	}
+//	 while (fabsf(zero_group3_ID1) <= 1e-6) 
+//	 {
+//		//group1
+//			// ��ȡID0���
+//				 modify_torque_cmd(&MotorA1_send_group3,1,0.0f);
+//				 unitreeA1_rxtx(&huart5, 3);
+//				 zero_group3_ID1 = MotorA1_recv_group3_id1.Pos;
+//				 HAL_Delay(1);
+//	 }
+	
+	Joint_Zero_init_Type1();
 	HAL_TIM_Base_Start_IT(&htim2);
 
+//	modify_changeid_cmd(&MotorA1_send_group2,10);
+//	unitreeA1_rxtx(&huart2, 2);
+//	HAL_Delay(10);
+
+	j = 0;
+	k = 0;
 	
   /* USER CODE END 2 */
 
@@ -133,36 +146,30 @@ int main(void)
 		
 		cstate = Key_GetTaskState();
 		cmode = Key_GetCurrentMode();
+		now1 = HAL_GetTick();
 	
 		if (cstate) {
-      //ˢ�±�־λ������ؼ����  
 			if(cmode == 0 && zero_init == 1)
 			{
-			// 	zero_group1_ID0 = 0.0f;
-			// 	zero_group1_ID1 = 0.0f;
+			 	zero_group1_ID0 = 0.0f;
+			 	zero_group1_ID1 = 0.0f;
 
-			// 	zero_group2_ID0 = 0.0f;
-			// 	zero_group2_ID1 = 0.0f;
+			 	zero_group2_ID0 = 0.0f;
+			 	zero_group2_ID1 = 0.0f;
 
-			// 	zero_group3_ID0 = 0.0f;
-			// 	zero_group3_ID1 = 0.0f;
+			 	zero_group3_ID0 = 0.0f;
+			 	zero_group3_ID1 = 0.0f;
 				
 			 	zero_group4_ID0 = 0.0f;
 			 	zero_group4_ID1 = 0.0f;
 			
 			// 	zero_init = 0;
 			}
-			//Joint_Zero_init_Type1();
-			while (fabsf(zero_group4_ID1) <= 1e-6) 
-			{
-					//group1
-					//
-					go_torque_cmd(&Motor_go_send_group4, 1, 0.0f);
-					unitreeA1_rxtx(&huart1, 4);
-					zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
-					HAL_Delay(1);
-			}
-			Task_Execute();
+			Joint_Zero_init_Type1();
+
+			
+			
+			
 			
 //			if (data_logging)
 //				{
@@ -173,13 +180,33 @@ int main(void)
 //					}
 //				}
 			
-			HAL_Delay(10);
+			
+//			if(cmode == 1 && j == 0)
+//			{
+//					modify_changeid_cmd(&MotorA1_send_group2,11);
+//					unitreeA1_rxtx(&huart2, 2);
+//					j++;
+//					HAL_Delay(10);
+//				
+//			}
+//			if(cmode == 2 && k == 0)
+//			{
+//					modify_changeid_cmd(&MotorA1_send_group2,0);
+//					unitreeA1_rxtx(&huart2, 2);
+//					k++;
+//					HAL_Delay(10);
+//			}
+			
+			
+			now2 = HAL_GetTick();
+			del_t = now2-now1;
     }
 		else
 		{
 			motor_relax();
-//			modify_changeid_cmd(&MotorA1_send_group1,10);
-//			unitreeA1_rxtx(&huart1,1);
+			
+//			modify_changeid_cmd(&MotorA1_send_group2,10);
+//			unitreeA1_rxtx(&huart2,2);
 //			HAL_Delay(10);
 				
 		}
@@ -253,6 +280,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim->Instance == TIM2)
   {
 		Key_Process();
+		Task_Execute();
+		
+
 	}
 }
 

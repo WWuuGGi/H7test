@@ -50,12 +50,12 @@ extern HAL_StatusTypeDef trans_st[4];// 4组发送状态
 
 //#define GROUP_PORT_1 GPIOB
 //#define GROUP_PORT_2 GPIOA
-//#define GROUP_PORT_3 GPIOC
+#define GROUP_PORT_3 GPIOD
 ////#define GROUP_PORT_4 GPIOC
 
 //#define GROUP_PIN_1 GPIO_PIN_10
 //#define GROUP_PIN_2 GPIO_PIN_8
-//#define GROUP_PIN_3 GPIO_PIN_8
+#define GROUP_PIN_3 GPIO_PIN_8
 //#define GROUP_PIN_4 GPIO_PIN_8
 
 

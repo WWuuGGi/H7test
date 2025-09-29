@@ -229,13 +229,13 @@ void Task_Execute(void) {
 							Velocity end_vel = {0};
 							Acceleration start_acc = {0};
 							Acceleration end_acc = {0};
-							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,10.0f);
+							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
 						}
 						
 						if(step_mode_1 < STEP_NUM && task_running)
 						{
 							
-							Joint_Full_PW_Control(step_mode_1);
+							//Joint_Full_PW_Control(step_mode_1);
 //							Joint_Full_Position_Control(step_mode_1);
 //							modify_speed_cmd(&MotorA1_send_group1,1,0.5f);
 //							//modify_torque_cmd(&MotorA1_send_group1,1,0.75f);
@@ -245,12 +245,12 @@ void Task_Execute(void) {
 						}
 						else
 						{
-							Joint_Full_PW_Control(step_mode_1 - 1);
+							//Joint_Full_PW_Control(step_mode_1 - 1);
 						}
 					}
 					else
 					{
-						motor_relax();
+						//motor_relax();
 					}
             break;
         case 2:
@@ -280,24 +280,24 @@ void Task_Execute(void) {
 
 								// 初始化CDPR系统
 								//	cdpr_init(&start, &end);
-								cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,10.0f);
+								cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
 							}
 							
 							if(step_mode_2 < STEP_NUM && task_running)
 							{
 								
-								Joint_Full_PW_Control(step_mode_2);
+								//Joint_Full_PW_Control(step_mode_2);
 								step_mode_2++;
 
 							}
 							else
 							{
-								motor_relax();
+								//motor_relax();
 							}
 					}
 					else
 					{
-						motor_relax();
+						//motor_relax();
 					}
 						break;
         case 3:
@@ -320,7 +320,7 @@ void Task_Execute(void) {
 							Acceleration start_acc = {0};
 							Acceleration end_acc = {0};
 
-							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,10.0f);
+							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
 						}
 						
 						if(step_mode_3 < STEP_NUM && task_running)

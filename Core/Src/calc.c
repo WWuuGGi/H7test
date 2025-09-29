@@ -345,7 +345,7 @@ static void generate_trajectory_and_angles(float32_t t_start, float32_t t_end, f
 // 初始化函数（需要传入完整的边界条件）
 void cdpr_init(const Pose *start_pose, const Velocity *start_vel, const Acceleration *start_acc,
               const Pose *end_pose, const Velocity *end_vel, const Acceleration *end_acc, float time) {
-    generate_trajectory_and_angles(0.0f, time, 0.01f,
+    generate_trajectory_and_angles(0.0f, time, 0.02f,
                        start_pose, start_vel, start_acc,
                        end_pose, end_vel, end_acc);
 }
