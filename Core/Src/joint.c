@@ -184,24 +184,24 @@ void Joint_Position_Control(uint8_t group, uint8_t id, float Pos[][STEP_NUM], fl
 // 计算目标位置（叠加零点）
     if (id == 0) {
         switch(group) {
-            case 1: target_pos = Pos[7][step] + zero_group1_ID0; 
+            case 1: target_pos = +1.0f * Pos[5][step] + zero_group1_ID0; 
 										break;
-            case 2: target_pos = Pos[5][step] + zero_group2_ID0;
+            case 2: target_pos = +1.0f * Pos[7][step] + zero_group2_ID0;
 										break;
-            case 3: target_pos = -1.0f * Pos[3][step] + zero_group3_ID0; 
+            case 3: target_pos = -1.0f * Pos[1][step] + zero_group3_ID0; 
 										break;
-            case 4: target_pos = Pos[6][step] + zero_group4_ID0; 
+            case 4: target_pos = -1.0f * Pos[3][step] + zero_group4_ID0; 
 										break;
         }
     } else if (id == 1){
         switch(group) {
-            case 1: target_pos = -1.0f * Pos[6][step] + zero_group1_ID1; 
+            case 1: target_pos = -1.0f * Pos[4][step] + zero_group1_ID1; 
 										break;
-            case 2: target_pos = -1.0f * Pos[4][step] + zero_group2_ID1; 
+            case 2: target_pos = -1.0f * Pos[6][step] + zero_group2_ID1; 
 										break;
-            case 3: target_pos = Pos[0][step] + zero_group3_ID1; 
+            case 3: target_pos = +1.0f * Pos[0][step] + zero_group3_ID1; 
 										break;
-						case 4: target_pos = Pos[7][step] + zero_group4_ID1; 
+						case 4: target_pos = Pos[2][step] + zero_group4_ID1; 
 										break;
 				}
 
@@ -238,42 +238,42 @@ void Joint_PW_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omeg
         default: return;
     }
 		//b1 - G3 ID 1
-		//b2 - G2 ID 2
-		//b3 - G1 ID 2
-		//b4 - G3 ID 0
-		//b5 - G2 ID 1
-		//b6 - G2 ID 0 
-		//b7 - G1 ID 1
-		//b8 - G1 ID 0 
+		//b2 - G3 ID 0
+		//b3 - G4 ID 1
+		//b4 - G4 ID 0
+		//b5 - G1 ID 1
+		//b6 - G1 ID 0 
+		//b7 - G2 ID 1
+		//b8 - G2 ID 0 
 		// 计算目标位置（叠加零点）
     if (id == 0) {
         switch(group) {
-            case 1: target_pos = +1.0f * Pos[7][step] + zero_group1_ID0; 
-										target_spd = Omega[7][step];
-										break;
-            case 2: target_pos = +1.0f * Pos[5][step] + zero_group2_ID0;
+            case 1: target_pos = +1.0f * Pos[5][step] + zero_group1_ID0; 
 										target_spd = Omega[5][step];
 										break;
-            case 3: target_pos = -1.0f * Pos[3][step] + zero_group3_ID0; 
-										target_spd = -1.0f * Omega[3][step];
+            case 2: target_pos = +1.0f * Pos[7][step] + zero_group2_ID0;
+										target_spd = Omega[7][step];
 										break;
-            case 4: target_pos = Pos[6][step] + zero_group4_ID0; 
-										target_spd = Omega[6][step];
+            case 3: target_pos = -1.0f * Pos[1][step] + zero_group3_ID0; 
+										target_spd = -1.0f * Omega[1][step];
+										break;
+            case 4: target_pos = -1.0f * Pos[3][step] + zero_group4_ID0; 
+										target_spd = -1.0f * Omega[3][step];
 										break;
         }
     } else if (id == 1){
         switch(group) {
-            case 1: target_pos = -1.0f * Pos[6][step] + zero_group1_ID1; 
-										target_spd = -1.0f * Omega[6][step];
-										break;
-            case 2: target_pos = -1.0f * Pos[4][step] + zero_group2_ID1; 
+            case 1: target_pos = -1.0f * Pos[4][step] + zero_group1_ID1; 
 										target_spd = -1.0f * Omega[4][step];
+										break;
+            case 2: target_pos = -1.0f * Pos[6][step] + zero_group2_ID1; 
+										target_spd = -1.0f * Omega[6][step];
 										break;
             case 3: target_pos = +1.0f * Pos[0][step] + zero_group3_ID1; 
 										target_spd = Omega[0][step];
 										break;
-						case 4: target_pos = Pos[7][step] + zero_group4_ID1; 
-										target_spd = Omega[7][step];
+						case 4: target_pos = Pos[2][step] + zero_group4_ID1; 
+										target_spd = Omega[2][step];
 										break;
 				}
 
@@ -293,12 +293,16 @@ void Joint_Full_Position_Control(uint16_t step)
 {
 	Joint_Position_Control(1, 0, motor_angle, 0.022f, 0.1f, step);
 	Joint_Position_Control(1, 1, motor_angle, 0.022f, 0.1f, step);
-	Joint_Position_Control(1, 2, motor_angle, 0.022f, 0.1f, step);
+
 	Joint_Position_Control(2, 0, motor_angle, 0.022f, 0.1f, step);
 	Joint_Position_Control(2, 1, motor_angle, 0.022f, 0.1f, step);
-	Joint_Position_Control(2, 2, motor_angle, 0.022f, 0.1f, step);
-	Joint_Position_Control(3, 0, motor_angle, 0.20f, 0.001f, step);
-	Joint_Position_Control(3, 1, motor_angle, 0.20f, 0.001f, step);
+
+	Joint_Position_Control(3, 0, motor_angle, 0.022f, 0.1f, step);
+	Joint_Position_Control(3, 1, motor_angle, 0.022f, 0.1f, step);
+	
+	Joint_Position_Control(4, 0, motor_angle, 0.21f, 0.001f, step);
+	Joint_Position_Control(4, 1, motor_angle, 0.21f, 0.001f, step);
+	
 	
 }
 
@@ -317,16 +321,5 @@ void Joint_Full_PW_Control(uint16_t step)
 	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.21f, 0.001f, step);
 }
 
-// // 离地检测
-// uint8_t Joint_IsOn_Ground()
-// {
-//     if (MotorA1_recv_right_id01.T < 0 && MotorA1_recv_right_id00.T > 0 )
-//     {
-//         return 0;
-//     }
-//     if (MotorA1_recv_left_id00.T < 0 && MotorA1_recv_left_id01.T > 0 )
-//     {
-//         return 0;
-//     }
-//     return 1;
-// }
+
+

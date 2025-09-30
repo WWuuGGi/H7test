@@ -193,6 +193,7 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 								recv_buf = Date_group3;
 								recv_id0 = &MotorA1_recv_group3_id0;
 								recv_id1 = &MotorA1_recv_group3_id1;
+								break;
 						default: return;
 				}
 
@@ -346,5 +347,8 @@ void motor_relax(void)
 	unitreeA1_rxtx(&huart4,4);
 
 }
+
+
+
 
 

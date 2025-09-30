@@ -278,6 +278,14 @@
           <ItemText>\\H7test\../Core/Src/A1_motor_drive.c\MotorA1_send_group3</ItemText>
         </Ww>
       </WatchWindow2>
+      <MemoryWindow4>
+        <Mm>
+          <WinNumber>4</WinNumber>
+          <SubType>0</SubType>
+          <ItemText>MX_UART8_Init</ItemText>
+          <AccSizeX>0</AccSizeX>
+        </Mm>
+      </MemoryWindow4>
       <Tracepoint>
         <THDelay>0</THDelay>
       </Tracepoint>

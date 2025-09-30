@@ -3,7 +3,7 @@
 <title>Static Call Graph - [H7test\H7test.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image H7test\H7test.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Sep 30 10:32:29 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Sep 30 16:17:52 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1140 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -912,7 +912,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[b7]"></a>HAL_RS485Ex_Init</STRONG> (Thumb, 136 bytes, Stack size 24 bytes, stm32h7xx_hal_uart_ex.o(i.HAL_RS485Ex_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_SetConfig
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_CheckIdleState
@@ -1059,8 +1059,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
 </UL>
 
-<P><STRONG><a name="[b8]"></a>HAL_UART_MspInit</STRONG> (Thumb, 482 bytes, Stack size 248 bytes, usart.o(i.HAL_UART_MspInit))
-<BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<P><STRONG><a name="[b8]"></a>HAL_UART_MspInit</STRONG> (Thumb, 570 bytes, Stack size 256 bytes, usart.o(i.HAL_UART_MspInit))
+<BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
@@ -1096,15 +1096,15 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h743xx.o(RESET)
 </UL>
 <P><STRONG><a name="[d9]"></a>Joint_Full_PW_Control</STRONG> (Thumb, 210 bytes, Stack size 24 bytes, joint.o(i.Joint_Full_PW_Control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = Joint_Full_PW_Control &rArr; Joint_PW_Control &rArr; unitreeA1_rxtx &rArr; HAL_UART_Receive &rArr; UART_WaitOnFlagUntilTimeout &rArr; UART_EndRxTransfer
+<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = Joint_Full_PW_Control &rArr; Joint_PW_Control &rArr; unitreeA1_rxtx &rArr; HAL_UART_Receive &rArr; UART_WaitOnFlagUntilTimeout &rArr; UART_EndRxTransfer
 </UL>
 <BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_PW_Control
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Execute
 </UL>
 
-<P><STRONG><a name="[da]"></a>Joint_PW_Control</STRONG> (Thumb, 334 bytes, Stack size 32 bytes, joint.o(i.Joint_PW_Control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = Joint_PW_Control &rArr; unitreeA1_rxtx &rArr; HAL_UART_Receive &rArr; UART_WaitOnFlagUntilTimeout &rArr; UART_EndRxTransfer
+<P><STRONG><a name="[da]"></a>Joint_PW_Control</STRONG> (Thumb, 346 bytes, Stack size 24 bytes, joint.o(i.Joint_PW_Control))
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = Joint_PW_Control &rArr; unitreeA1_rxtx &rArr; HAL_UART_Receive &rArr; UART_WaitOnFlagUntilTimeout &rArr; UART_EndRxTransfer
 </UL>
 <BR>[Calls]<UL><LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_pw_cmd
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
@@ -1171,7 +1171,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[e9]"></a>MX_UART4_Init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, usart.o(i.MX_UART4_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = MX_UART4_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = MX_UART4_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetTxFifoThreshold
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetRxFifoThreshold
@@ -1183,7 +1183,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[eb]"></a>MX_UART8_Init</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, usart.o(i.MX_UART8_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = MX_UART8_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<BR><BR>[Stack]<UL><LI>Max Depth = 376<LI>Call Chain = MX_UART8_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetTxFifoThreshold
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetRxFifoThreshold
@@ -1195,7 +1195,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ec]"></a>MX_USART1_UART_Init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, usart.o(i.MX_USART1_UART_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = MX_USART1_UART_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = MX_USART1_UART_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetTxFifoThreshold
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetRxFifoThreshold
@@ -1207,7 +1207,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[ed]"></a>MX_USART2_UART_Init</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, usart.o(i.MX_USART2_UART_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = MX_USART2_UART_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<BR><BR>[Stack]<UL><LI>Max Depth = 368<LI>Call Chain = MX_USART2_UART_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetTxFifoThreshold
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_SetRxFifoThreshold
@@ -1276,7 +1276,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_ConfigClockSource
 </UL>
 
-<P><STRONG><a name="[cf]"></a>Task_Execute</STRONG> (Thumb, 382 bytes, Stack size 160 bytes, key_state_machine.o(i.Task_Execute))
+<P><STRONG><a name="[cf]"></a>Task_Execute</STRONG> (Thumb, 412 bytes, Stack size 160 bytes, key_state_machine.o(i.Task_Execute))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1108<LI>Call Chain = Task_Execute &rArr; cdpr_init &rArr; generate_trajectory_and_angles &rArr; get_rotation_matrix &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Full_PW_Control
@@ -1464,8 +1464,8 @@ Global Symbols
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_relax
 </UL>
 
-<P><STRONG><a name="[95]"></a>main</STRONG> (Thumb, 234 bytes, Stack size 24 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = main &rArr; MX_UART8_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
+<P><STRONG><a name="[95]"></a>main</STRONG> (Thumb, 238 bytes, Stack size 24 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 400<LI>Call Chain = main &rArr; MX_UART8_Init &rArr; HAL_RS485Ex_Init &rArr; HAL_UART_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Key_GetTaskState
@@ -1532,7 +1532,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_trajectory_and_angles
 </UL>
 
-<P><STRONG><a name="[dc]"></a>unitreeA1_rxtx</STRONG> (Thumb, 638 bytes, Stack size 184 bytes, a1_motor_drive.o(i.unitreeA1_rxtx))
+<P><STRONG><a name="[dc]"></a>unitreeA1_rxtx</STRONG> (Thumb, 658 bytes, Stack size 184 bytes, a1_motor_drive.o(i.unitreeA1_rxtx))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = unitreeA1_rxtx &rArr; HAL_UART_Receive &rArr; UART_WaitOnFlagUntilTimeout &rArr; UART_EndRxTransfer
 </UL>
 <BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modify_data

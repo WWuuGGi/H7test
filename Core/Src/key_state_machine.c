@@ -216,7 +216,7 @@ void Task_Execute(void) {
 							//step_mode_2 = 0;
 							//step_mode_3 = 0;
 							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
-							Pose end_pose = {0.25f, 0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
+							Pose end_pose = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
 //							switch(turn)
 //							{
 //								case 1:
@@ -235,7 +235,7 @@ void Task_Execute(void) {
 						if(step_mode_1 < STEP_NUM && task_running)
 						{
 							
-							//Joint_Full_PW_Control(step_mode_1);
+							Joint_Full_PW_Control(step_mode_1);
 //							Joint_Full_Position_Control(step_mode_1);
 //							modify_speed_cmd(&MotorA1_send_group1,1,0.5f);
 //							//modify_torque_cmd(&MotorA1_send_group1,1,0.75f);
@@ -245,12 +245,12 @@ void Task_Execute(void) {
 						}
 						else
 						{
-							//Joint_Full_PW_Control(step_mode_1 - 1);
+							Joint_Full_PW_Control(step_mode_1 - 1);
 						}
 					}
 					else
 					{
-						//motor_relax();
+						motor_relax();
 					}
             break;
         case 2:
@@ -286,18 +286,18 @@ void Task_Execute(void) {
 							if(step_mode_2 < STEP_NUM && task_running)
 							{
 								
-								//Joint_Full_PW_Control(step_mode_2);
+								Joint_Full_PW_Control(step_mode_2);
 								step_mode_2++;
 
 							}
 							else
 							{
-								//motor_relax();
+								Joint_Full_PW_Control(step_mode_2 - 1);
 							}
 					}
 					else
 					{
-						//motor_relax();
+						motor_relax();
 					}
 						break;
         case 3:
@@ -332,7 +332,7 @@ void Task_Execute(void) {
 						}
 						else
 						{
-							motor_relax();
+							Joint_Full_PW_Control(step_mode_3 - 1);
 							
 						}
 					}
