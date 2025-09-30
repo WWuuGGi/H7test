@@ -99,14 +99,14 @@ void Joint_Zero_init_Type1()
 			//group3
 			// 读取ID0零点
 			modify_torque_cmd(&MotorA1_send_group3, 0, 0.0f);
-			unitreeA1_rxtx(&huart7, 3);
+			unitreeA1_rxtx(&huart8, 3);
 			zero_group3_ID0 = MotorA1_recv_group3_id0.Pos;
 			
 			HAL_Delay(5);
 		
 			// 读取ID1零点
 			modify_torque_cmd(&MotorA1_send_group3, 1, 0.0f);
-			unitreeA1_rxtx(&huart7, 3);
+			unitreeA1_rxtx(&huart8, 3);
 			zero_group3_ID1 = MotorA1_recv_group3_id1.Pos;
 			
 			HAL_Delay(5);
@@ -176,7 +176,7 @@ void Joint_Position_Control(uint8_t group, uint8_t id, float Pos[][STEP_NUM], fl
     switch(group) {
         case 1: send_struct = &MotorA1_send_group1; huart = &huart1; break;
         case 2: send_struct = &MotorA1_send_group2; huart = &huart2; break;
-				case 3: send_struct = &MotorA1_send_group3; huart = &huart7; break;
+				case 3: send_struct = &MotorA1_send_group3; huart = &huart8; break;
         case 4: send_struct_go = &Motor_go_send_group4; huart = &huart4; break;
         default: return;
     }
@@ -232,7 +232,7 @@ void Joint_PW_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omeg
     switch(group) {
         case 1: send_struct = &MotorA1_send_group1; huart = &huart1; break;
         case 2: send_struct = &MotorA1_send_group2; huart = &huart2; break;
-				case 3: send_struct = &MotorA1_send_group3; huart = &huart7; break;
+				case 3: send_struct = &MotorA1_send_group3; huart = &huart8; break;
         case 4: send_struct_go = &Motor_go_send_group4; huart = &huart4; break;
         //case 4: send_struct = &MotorA1_send_group4; huart = &huart6; break;
         default: return;

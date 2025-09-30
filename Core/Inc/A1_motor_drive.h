@@ -12,7 +12,7 @@
 // 4组电机的发送结构体（每组对应一个发送数据体）
 extern motor_send_t MotorA1_send_group1;  // 第1组电机发送数据
 extern motor_send_t MotorA1_send_group2;  // 第2组电机发送数据
-//extern motor_send_t MotorA1_send_group3;  // 第3组电机发送数据
+extern motor_send_t MotorA1_send_group3;  // 第3组电机发送数据
 //extern motor_send_t MotorA1_send_group4;  // 第4组电机发送数据
 
 // 4组电机的接收结构体（每组2个ID，共8个电机）

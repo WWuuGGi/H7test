@@ -108,7 +108,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_UART4_Init();
-  MX_UART7_Init();
+  MX_UART8_Init();
   /* USER CODE BEGIN 2 */
 	
 //	 while (fabsf(zero_group3_ID1) <= 1e-6) 
@@ -116,7 +116,7 @@ int main(void)
 //		//group1
 //			// ��ȡID0���
 //				 modify_torque_cmd(&MotorA1_send_group3,1,0.0f);
-//				 unitreeA1_rxtx(&huart7, 3);
+//				 unitreeA1_rxtx(&huart8, 3);
 //				 zero_group3_ID1 = MotorA1_recv_group3_id1.Pos;
 //				 HAL_Delay(1);
 //	 }

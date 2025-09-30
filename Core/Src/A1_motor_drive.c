@@ -2,18 +2,6 @@
 
 #define PI 3.14159
 
-//motor_send_t MotorA1_send_left;       // 左腿一号电机数据体
-//motor_send_t MotorA1_send_right;      // 右腿一号电机数据体
-
-//motor_recv_t Date_left;               // 左腿电机接收数据体
-//motor_recv_t MotorA1_recv_left_id00;  // 左腿00号电机接收数据体
-//motor_recv_t MotorA1_recv_left_id01;  // 左腿01号电机接收数据体
-//motor_recv_t MotorA1_recv_left_id02;  // 左腿02号电机接收数据体
-
-//motor_recv_t Date_right;              // 右腿电机接收数据体
-//motor_recv_t MotorA1_recv_right_id00; // 右腿00号电机接收数据体
-//motor_recv_t MotorA1_recv_right_id01; // 右腿01号电机接收数据体
-//motor_recv_t MotorA1_recv_right_id02; // 右腿02号电机接收数据体
 //uint8_t Date[78];
 
 // 4组电机发送结构体初始化
@@ -348,9 +336,9 @@ void motor_relax(void)
 	unitreeA1_rxtx(&huart2,2);
 
 	modify_torque_cmd(&MotorA1_send_group3,0, 0.0f);
-	unitreeA1_rxtx(&huart7,3);
+	unitreeA1_rxtx(&huart8,3);
 	modify_torque_cmd(&MotorA1_send_group3,1, 0.0f);
-	unitreeA1_rxtx(&huart7,3);
+	unitreeA1_rxtx(&huart8,3);
 	
 	go_torque_cmd(&Motor_go_send_group4,0,0.0f);
 	unitreeA1_rxtx(&huart4,4);
