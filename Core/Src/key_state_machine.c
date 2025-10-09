@@ -189,11 +189,16 @@ static void Key_HandleEvents(void) {
         } else if (key2.event == KEY_EVENT_CLICK) {
             // 双击切换到模式2
             current_mode = 2;
-        } else if (key3.event == KEY_EVENT_CLICK) {
-            // 长按切换到模式3
-            current_mode = 3;
         }
-    }
+    }else
+				{
+						if (key3.event == KEY_EVENT_CLICK) {
+						// 长按切换到模式3
+						current_mode = 3;
+						}
+				}
+		
+
 }
 
 /**
