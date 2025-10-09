@@ -161,7 +161,7 @@ static void Key_HandleEvents(void) {
             step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
-						zero_init = 1;
+
 						//调成零力矩模式，等待拖拽回中
 						//motor_relax();
 					
@@ -172,6 +172,7 @@ static void Key_HandleEvents(void) {
 						step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
+						zero_init = 1;
 					
 						//调成零力矩模式，等待接收指令
 						//motor_relax();
@@ -299,53 +300,60 @@ void Task_Execute(void) {
 					{
 						motor_relax();
 					}
-						break;
-        case 3:
-            // 模式3的任务逻辑
-           //
-					if((step_mode_1 == 0) && (step_mode_2 == 0))
-					{
-						if(step_mode_3 == 0)
-						{
-
-							data_logging =1;
-							
-							//初次进入时，计算轨迹路径
-							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
-							Pose end_pose = {-0.25f, -0.25f, 0.635f, 0.0f, 0.0f, 0.0f};
-
-							// 初始速度和加速度为零
-							Velocity start_vel = {0};
-							Velocity end_vel = {0};
-							Acceleration start_acc = {0};
-							Acceleration end_acc = {0};
-
-							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
-						}
-						
-						if(step_mode_3 < STEP_NUM && task_running)
-						{
-							
-							Joint_Full_PW_Control(step_mode_3);
-							//Joint_Full_Position_Control(step_mode_3);
-							step_mode_3++;
-						}
-						else
-						{
-							Joint_Full_PW_Control(step_mode_3 - 1);
-							
-						}
-					}
-					else
-					{
-						motor_relax();
-					}
             break;
         default:
             // 默认模式处理
             current_mode = 0;
             break;
     }
+	}
+	// 模式3的任务逻辑
+	//
+	if(current_mode == 3)
+	{
+			if(step_mode_3 == 0)
+			{
+					Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+					Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+
+					Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+					Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+
+					Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+					Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
+
+					Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.0f, 0.003f, 0);
+					Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.0f, 0.003f, 0);
+
+					current_pos[0] = Joint_ReadCurrentPos(1, 0);
+					current_pos[1] = Joint_ReadCurrentPos(1, 1);
+					current_pos[2] = Joint_ReadCurrentPos(2, 0);
+					current_pos[3] = Joint_ReadCurrentPos(2, 1);
+					current_pos[4] = Joint_ReadCurrentPos(3, 0);
+					current_pos[5] = Joint_ReadCurrentPos(3, 1);
+					current_pos[6] = Joint_ReadCurrentPos(4, 0);
+					current_pos[7] = Joint_ReadCurrentPos(4, 1);
+
+					motor_init_zero_return(current_pos,zeros,5.0f);
+					
+			}
+
+			if(step_mode_3 < STEP_NUM)
+			{
+
+			Joint_Full_zero_Control(step_mode_3);
+			//Joint_Full_Position_Control(step_mode_3);
+			step_mode_3++;
+			}
+			else
+			{
+			Joint_Full_zero_Control(step_mode_3 - 1);
+
+			}
+		}
+	else
+	{
+	motor_relax();
 	}
 }
 

@@ -43,6 +43,9 @@ extern float zero_group3_ID1;
 extern float zero_group4_ID0;
 extern float zero_group4_ID1;
 
+extern float zeros[CABLE_NUM];
+extern float current_pos[CABLE_NUM];
+
 
 
 // 电机发送/接收结构体声明（与A1_motor_drive.h对应）
@@ -111,6 +114,8 @@ void Joint_Full_Position_Control(uint16_t step);
 void Joint_Full_PW_Control(uint16_t step);
 // 离地检测 (测试)
 // uint8_t Joint_IsOn_Ground();
+float Joint_ReadCurrentPos(uint8_t group, uint8_t id);
 
+void Joint_Full_zero_Control(uint16_t step);
 
 #endif // !JOINT_H

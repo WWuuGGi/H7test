@@ -24,6 +24,9 @@ float zero_group3_ID1 = 0.0f;
 float zero_group4_ID0 = 0.0f;
 float zero_group4_ID1 = 0.0f;
 
+float current_pos[CABLE_NUM];
+float zeros[CABLE_NUM];
+
 
 uint8_t STOP = False;
 
@@ -126,6 +129,14 @@ void Joint_Zero_init_Type1()
 			
 			HAL_Delay(5);
 	}
+			zeros[0] = zero_group1_ID0;
+			zeros[1] = zero_group1_ID1;
+			zeros[2] = zero_group2_ID0;
+			zeros[3] = zero_group2_ID1;
+			zeros[4] = zero_group3_ID0;
+			zeros[5] = zero_group3_ID1;
+			zeros[6] = zero_group4_ID0;
+			zeros[7] = zero_group4_ID1;
 }
 
 
@@ -289,6 +300,68 @@ void Joint_PW_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omeg
 			unitreeA1_rxtx(huart, group);
 }
 
+void Joint_zero_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omega[][STEP_NUM],float kp,float kw,uint16_t step)//, float Pos_Back
+{   
+		float target_pos = 0.0f;
+		float target_spd = 0.0f;
+		motor_send_t *send_struct = NULL;
+		UART_HandleTypeDef *huart = NULL;
+		MotorCmd_t *send_struct_go = NULL;
+		
+	
+		// 绑定组对应的发送结构体和串口
+    switch(group) {
+        case 1: send_struct = &MotorA1_send_group1; huart = &huart1; break;
+        case 2: send_struct = &MotorA1_send_group2; huart = &huart2; break;
+				case 3: send_struct = &MotorA1_send_group3; huart = &huart8; break;
+        case 4: send_struct_go = &Motor_go_send_group4; huart = &huart4; break;
+        //case 4: send_struct = &MotorA1_send_group4; huart = &huart6; break;
+        default: return;
+    }
+		// 计算目标位置（叠加零点）
+    if (id == 0) {
+        switch(group) {
+            case 1: target_pos = +1.0f * Pos[0][step] ; 
+										target_spd = Omega[0][step];
+										break;
+            case 2: target_pos = +1.0f * Pos[2][step] ;
+										target_spd = Omega[2][step];
+										break;
+            case 3: target_pos = -1.0f * Pos[4][step] ; 
+										target_spd = -1.0f * Omega[4][step];
+										break;
+            case 4: target_pos = -1.0f * Pos[6][step] ; 
+										target_spd = -1.0f * Omega[6][step];
+										break;
+        }
+    } else if (id == 1){
+        switch(group) {
+            case 1: target_pos = -1.0f * Pos[1][step]; 
+										target_spd = -1.0f * Omega[1][step];
+										break;
+            case 2: target_pos = -1.0f * Pos[3][step] ; 
+										target_spd = -1.0f * Omega[3][step];
+										break;
+            case 3: target_pos = +1.0f * Pos[5][step] ; 
+										target_spd = Omega[5][step];
+										break;
+						case 4: target_pos = Pos[7][step] ; 
+										target_spd = Omega[7][step];
+										break;
+				}
+
+		} 
+		
+		if(group == 4)
+		{
+				go_pw_cmd(send_struct_go,id,target_pos,target_spd,kp,kw);
+		}
+		else {
+				modify_PW_cmd(send_struct, id, target_pos,target_spd, kp, kw);
+    }
+			unitreeA1_rxtx(huart, group);
+}
+
 void Joint_Full_Position_Control(uint16_t step)
 {
 	Joint_Position_Control(1, 0, motor_angle, 0.022f, 0.1f, step);
@@ -319,6 +392,88 @@ void Joint_Full_PW_Control(uint16_t step)
 	
 	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.21f, 0.001f, step);
 	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.21f, 0.001f, step);
+}
+
+void Joint_Full_zero_Control(uint16_t step)
+{
+	Joint_zero_Control(1, 0, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+	Joint_zero_Control(1, 1, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+
+	Joint_zero_Control(2, 0, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+	Joint_zero_Control(2, 1, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+
+	Joint_zero_Control(3, 0, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+	Joint_zero_Control(3, 1, zero_return_angle, zero_return_omega, 0.022f, 0.1f, step);
+	
+	Joint_zero_Control(4, 0, zero_return_angle, zero_return_omega, 0.21f, 0.001f, step);
+	Joint_zero_Control(4, 1, zero_return_angle, zero_return_omega, 0.21f, 0.001f, step);
+}
+
+/**
+ * @brief 读取指定电机的当前位置
+ * @param group 电机组号 (1-4)
+ * @param id 电机ID (0-1)
+ * @return 当前位置 (度，相对于零位置)
+ */
+float Joint_ReadCurrentPos(uint8_t group, uint8_t id) {
+    // 读取最新电机数据
+
+				motor_recv_t *recv_id0 = NULL;
+				motor_recv_t *recv_id1 = NULL;
+				MotorData_t *recv_id0_go = NULL;
+				MotorData_t *recv_id1_go = NULL;
+
+					// 根据组别绑定缓冲区和结构体
+				switch(group) {
+						case 1:
+								recv_id0 = &MotorA1_recv_group1_id0;
+								recv_id1 = &MotorA1_recv_group1_id1;
+								break;
+						
+						case 2:
+								recv_id0 = &MotorA1_recv_group2_id0;
+								recv_id1 = &MotorA1_recv_group2_id1;
+								break;
+						
+						case 3:
+								recv_id0 = &MotorA1_recv_group3_id0;
+								recv_id1 = &MotorA1_recv_group3_id1;
+								break;
+						
+						case 4:
+								recv_id0_go = &Motor_go_recv_group4_id0;
+								recv_id1_go = &Motor_go_recv_group4_id1;
+								break;// go协议接收缓冲区
+						
+						default: 
+							break;
+						
+				if (group == 4)
+				{
+						if(id == 0)
+						{		
+								return recv_id0_go->Pos;
+						}
+						else
+						{
+								return recv_id1_go->Pos;
+								
+						}
+				}
+				else
+				{
+						if(id == 0)
+						{		
+								return recv_id0->Pos;
+						}
+						else
+						{
+								return recv_id1->Pos;
+								
+						}
+				}
+
+	}
 }
 
 

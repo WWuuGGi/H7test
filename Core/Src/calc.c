@@ -17,6 +17,11 @@ float32_t motor_angle[CABLE_NUM][STEP_NUM]; // 电机角度轨迹(角度)
 float32_t motor_omega[CABLE_NUM][STEP_NUM];
 Poly5Coeff coeffs[6];                       // 多项式系数(复用，不存储完整轨迹)
 
+float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
+float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
+Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
+
+
 // 计算五次多项式系数
 static void calculate_poly5_coeff(Poly5Coeff *coeff, 
                                  float32_t s0, float32_t v0, float32_t a0,  // 起点边界条件
@@ -360,5 +365,86 @@ void cdpr_get_current_motor_angles(uint16_t time_idx, float32_t angles[CABLE_NUM
     }
 }
 		
+
+/**
+ * @brief 计算单个电机从当前角度到零位置的五次多项式轨迹
+ * @param coeff 多项式系数存储结构体
+ * @param current_angle 电机当前角度(度)
+ * @param zero_angle 标定的零位置角度(度)
+ * @param t_total 归位总时间(秒)
+ */
+static void calc_zero_return_coeff(Poly5Coeff *coeff, 
+                                  float32_t current_angle, 
+                                  float32_t zero_angle, 
+                                  float32_t t_total) {
+    // 边界条件：初始角度=当前角度，初始速度/加速度=0；末端角度=零位，末端速度/加速度=0
+    calculate_poly5_coeff(coeff,
+                         current_angle, 0.0f, 0.0f,  // 起点：位置、速度、加速度
+                         zero_angle,    0.0f, 0.0f,  // 终点：位置、速度、加速度
+                         t_total);                    // 总时间
+}
+
+/**
+ * @brief 生成所有电机的归位轨迹
+ * @param t_total 归位总时间(秒)
+ * @param current_angles 各电机当前角度数组(度) [CABLE_NUM]
+ * @param calib_zeros 各电机标定零位置角度数组(度) [CABLE_NUM]
+ */
+static void generate_zero_return_trajectory(float32_t t_total,
+                                           const float32_t current_angles[CABLE_NUM],
+                                           const float32_t calib_zeros[CABLE_NUM]) {
+    if (t_total <= 0.0f) return;  // 无效时间检查
+    
+    // 1. 计算每个电机的轨迹多项式系数
+    for (uint8_t c = 0; c < CABLE_NUM; c++) {
+        calc_zero_return_coeff(&zero_return_coeffs[c],
+                              current_angles[c],
+                              calib_zeros[c],
+                              t_total);
+    }
+    
+    // 2. 按时间步生成轨迹点
+    float32_t t_step = t_total / (STEP_NUM - 1);  // 时间步长（含起点和终点）
+    for (uint16_t i = 0; i < STEP_NUM; i++) {
+        float32_t t = i * t_step;  // 当前时刻（0到t_total）
+        float32_t t2 = t * t;
+        float32_t t3 = t2 * t;
+        float32_t t4 = t3 * t;
+        float32_t t5 = t4 * t;
+        
+        // 计算每个电机的目标角度和角速度
+        for (uint8_t c = 0; c < CABLE_NUM; c++) {
+            // 角度（五次多项式）
+            zero_return_angle[c][i] = zero_return_coeffs[c].a0 + 
+                                     zero_return_coeffs[c].a1 * t + 
+                                     zero_return_coeffs[c].a2 * t2 + 
+                                     zero_return_coeffs[c].a3 * t3 + 
+                                     zero_return_coeffs[c].a4 * t4 + 
+                                     zero_return_coeffs[c].a5 * t5;
+            
+            // 角速度（多项式一阶导数）
+            zero_return_omega[c][i] = zero_return_coeffs[c].a1 + 
+                                     2 * zero_return_coeffs[c].a2 * t + 
+                                     3 * zero_return_coeffs[c].a3 * t2 + 
+                                     4 * zero_return_coeffs[c].a4 * t3 + 
+                                     5 * zero_return_coeffs[c].a5 * t4;
+						zero_return_omega[c][i] = zero_return_omega[c][i]/180.0f*3.1415926f;
+        }
+    }
+}
+
+/**
+ * @brief 初始化归位轨迹规划
+ * @param current_angles 各电机当前角度(度) [CABLE_NUM]
+ * @param calib_zeros 标定的零位置角度(度) [CABLE_NUM]
+ * @param move_time 归位总时间(秒，建议1~3秒)
+ */
+void motor_init_zero_return(const float32_t current_angles[CABLE_NUM],
+                           const float32_t calib_zeros[CABLE_NUM],
+                           float32_t move_time) {
+    generate_zero_return_trajectory(move_time, current_angles, calib_zeros);
+}
+
+
 
 

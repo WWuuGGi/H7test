@@ -80,6 +80,9 @@ static void calculate_poly5_coeff(Poly5Coeff *coeff,
 extern float32_t cable_initial_length[CABLE_NUM];  // 每条绳索的初始长度(零点参考)
 extern float32_t motor_angle[CABLE_NUM][STEP_NUM]; // 电机角度轨迹(角度)
 extern float32_t motor_omega[CABLE_NUM][STEP_NUM]; // 电机角速度(角度)
+extern float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
+extern float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
+extern Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
 // 末端执行器物理参数（外部可见）
 extern const float32_t mass_ee;    // 末端执行器质量
@@ -171,6 +174,40 @@ void cdpr_init(const Pose *start_pose, const Velocity *start_vel, const Accelera
  * @param velocity 输出参数，存储当前所有绳索的速度
  */
 void cdpr_get_current_motor_angles(uint16_t time_idx, float32_t angles[CABLE_NUM]);
+
+/**
+ * @brief 计算单个电机从当前角度到零位置的五次多项式轨迹
+ * @param coeff 多项式系数存储结构体
+ * @param current_angle 电机当前角度(度)
+ * @param zero_angle 标定的零位置角度(度)
+ * @param t_total 归位总时间(秒)
+ */
+static void calc_zero_return_coeff(Poly5Coeff *coeff, 
+                                  float32_t current_angle, 
+                                  float32_t zero_angle, 
+                                  float32_t t_total);
+
+/**
+ * @brief 生成所有电机的归位轨迹
+ * @param t_total 归位总时间(秒)
+ * @param current_angles 各电机当前角度数组(度) [CABLE_NUM]
+ * @param calib_zeros 各电机标定零位置角度数组(度) [CABLE_NUM]
+ */
+static void generate_zero_return_trajectory(float32_t t_total,
+                                           const float32_t current_angles[CABLE_NUM],
+                                           const float32_t calib_zeros[CABLE_NUM]);
+
+
+/**
+ * @brief 初始化归位轨迹规划
+ * @param current_angles 各电机当前角度(度) [CABLE_NUM]
+ * @param calib_zeros 标定的零位置角度(度) [CABLE_NUM]
+ * @param move_time 归位总时间(秒，建议1~3秒)
+ */
+void motor_init_zero_return(const float32_t current_angles[CABLE_NUM],
+                           const float32_t calib_zeros[CABLE_NUM],
+                           float32_t move_time);
+
 
 
 #endif
