@@ -323,27 +323,7 @@ void Task_Execute(void) {
 	{
 			if(step_mode_3 == 0)
 			{
-					Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-					Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-
-					Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-					Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-
-					Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-					Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.0f, 0.1f, 0);
-
-					Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.0f, 0.003f, 0);
-					Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.0f, 0.003f, 0);
-
-					current_pos[0] = Joint_ReadCurrentPos(1, 0);
-					current_pos[1] = Joint_ReadCurrentPos(1, 1);
-					current_pos[2] = Joint_ReadCurrentPos(2, 0);
-					current_pos[3] = Joint_ReadCurrentPos(2, 1);
-					current_pos[4] = Joint_ReadCurrentPos(3, 0);
-					current_pos[5] = Joint_ReadCurrentPos(3, 1);
-					current_pos[6] = Joint_ReadCurrentPos(4, 0);
-					current_pos[7] = Joint_ReadCurrentPos(4, 1);
-
+					Joint_readall();
 					motor_init_zero_return(current_pos,zeros,5.0f);
 					
 			}

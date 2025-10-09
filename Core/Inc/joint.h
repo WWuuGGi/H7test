@@ -118,4 +118,6 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id);
 
 void Joint_Full_zero_Control(uint16_t step);
 
+void Joint_readall(void);
+
 #endif // !JOINT_H

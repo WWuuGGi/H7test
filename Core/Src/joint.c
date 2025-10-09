@@ -49,10 +49,11 @@ uint8_t STOP = False;
 // 电机零点自检
 int Joint_Zero_OK() {
     
-    if (	fabsf(zero_group1_ID0) <= 1e-6f || fabsf(zero_group1_ID1) <= 1e-6f // fabsf(zero_group1_ID2) <= 1e-6f 
+    if (	fabsf(zero_group1_ID0) <= 1e-6f || fabsf(zero_group1_ID1) <= 1e-6f 
 			||	fabsf(zero_group2_ID0) <= 1e-6f || fabsf(zero_group2_ID1) <= 1e-6f || 
 					fabsf(zero_group3_ID0) <= 1e-6f || fabsf(zero_group3_ID1) <= 1e-6f
-			||	fabsf(zero_group4_ID0) <= 1e-6f || fabsf(zero_group4_ID1) <= 1e-6f )
+			||	fabsf(zero_group4_ID0) <= 1e-6f || fabsf(zero_group4_ID1) <= 1e-6f 
+		)
 			{
         return 0;  //有零位没有被设置，返回false
 			}
@@ -69,6 +70,7 @@ void Joint_Zero_init_Type1()
   while (!Joint_Zero_OK()) 
 		{
 		//group1
+			
 			// 读取ID0零点
 			modify_torque_cmd(&MotorA1_send_group1, 0, 0.0f);
 			unitreeA1_rxtx(&huart1, 1);
@@ -140,32 +142,6 @@ void Joint_Zero_init_Type1()
 }
 
 
-//// 回归零点
-//void Joint_GOTO_zero()
-//{
-//    modify_pos_cmd(&MotorA1_send_left,0,(float) zero_left_ID0, 0.006, 1.0);  // 0.005 0.5  
-//    unitreeA1_rxtx(&huart1); 
-
-//    HAL_Delay(2);
-//}
-
-// 检测是否超过上限位 因为转换器有问题，暂时不使用该函数
-//void Joint_Monitor()
-//{   
-//    if (((MotorA1_recv_left_id00.Pos  - zero_left_ID0)  <= -(UP_LIMIT+TOLERANCE) || (MotorA1_recv_left_id00.Pos - zero_left_ID0) >= +(DOWN_LIMIT+TOLERANCE)) && zero_left_ID0 != 0)
-//        {STOP = True;}
-//    if (((MotorA1_recv_left_id01.Pos  - zero_left_ID1)  >= +(UP_LIMIT+TOLERANCE) || (MotorA1_recv_left_id01.Pos - zero_left_ID1) <= -(DOWN_LIMIT+TOLERANCE)) && zero_left_ID1 != 0)
-//        {STOP = True;}
-//    if (((MotorA1_recv_right_id00.Pos - zero_right_ID0) >= +(UP_LIMIT+TOLERANCE) || (MotorA1_recv_right_id00.Pos - zero_right_ID0) <= -(DOWN_LIMIT+TOLERANCE)) && zero_right_ID0 != 0)
-//        {STOP = True;}
-//    if (((MotorA1_recv_right_id01.Pos - zero_right_ID1) <= -(UP_LIMIT+TOLERANCE) || (MotorA1_recv_right_id01.Pos - zero_right_ID1) >= +(DOWN_LIMIT+TOLERANCE)) && zero_right_ID1 != 0)
-//        {STOP = True;}
-
-//    if(STOP==True)
-//      {HAL_GPIO_TogglePin(GPIOH,GPIO_PIN_12); 
-//       osDelay(300);
-//      } // 红灯闪烁
-//}
 
 /**
   * @brief          底盘关节位置控制
@@ -248,6 +224,7 @@ void Joint_PW_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omeg
         //case 4: send_struct = &MotorA1_send_group4; huart = &huart6; break;
         default: return;
     }
+		
 		//b1 - G3 ID 1
 		//b2 - G3 ID 0
 		//b3 - G4 ID 1
@@ -382,15 +359,19 @@ void Joint_Full_Position_Control(uint16_t step)
 void Joint_Full_PW_Control(uint16_t step)
 {
 	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	
 	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
 
 	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	
 	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
 
 	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	
 	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
 	
 	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.21f, 0.001f, step);
+	
 	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.21f, 0.001f, step);
 }
 
@@ -475,6 +456,53 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id) {
 				}
 
 				return 0.0f;
+
+}
+
+void Joint_readall(void)
+{
+					modify_speed_cmd(&MotorA1_send_group1,0, 0.0f);
+					unitreeA1_rxtx(&huart1,1);
+					current_pos[0] = MotorA1_recv_group1_id0.Pos;
+	
+					modify_speed_cmd(&MotorA1_send_group1,1, 0.0f);
+					unitreeA1_rxtx(&huart1,1);
+					current_pos[1] = MotorA1_recv_group1_id1.Pos;
+	
+	
+					modify_speed_cmd(&MotorA1_send_group2,0, 0.0f);
+					unitreeA1_rxtx(&huart2,2);
+					current_pos[2] = MotorA1_recv_group2_id0.Pos;
+	
+					modify_speed_cmd(&MotorA1_send_group2,1, 0.0f);
+					unitreeA1_rxtx(&huart2,2);
+					current_pos[3] = MotorA1_recv_group2_id1.Pos;
+	
+	
+					modify_speed_cmd(&MotorA1_send_group3,0, 0.0f);
+					unitreeA1_rxtx(&huart8,3);
+					current_pos[4] = MotorA1_recv_group3_id0.Pos;
+	
+					modify_speed_cmd(&MotorA1_send_group3,1, 0.0f);
+					unitreeA1_rxtx(&huart8,3);
+					current_pos[5] = MotorA1_recv_group3_id1.Pos;
+					
+					
+					go_spd_cmd(&Motor_go_send_group4,0,0.0f);
+					unitreeA1_rxtx(&huart4,4);
+					current_pos[6] = Motor_go_recv_group4_id0.Pos;
+					
+					go_spd_cmd(&Motor_go_send_group4,1,0.0f);
+					unitreeA1_rxtx(&huart4,4);
+					current_pos[7] = Motor_go_recv_group4_id1.Pos;
+
+
+
+
+
+
+
+
 
 }
 
