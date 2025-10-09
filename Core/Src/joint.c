@@ -465,44 +465,49 @@ void Joint_readall(void)
 					unitreeA1_rxtx(&huart1,1);
 					current_pos[0] = MotorA1_recv_group1_id0.Pos;
 	
+					HAL_Delay(5);
+	
 					modify_speed_cmd(&MotorA1_send_group1,1, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
 					current_pos[1] = MotorA1_recv_group1_id1.Pos;
 	
+					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group2,0, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
 					current_pos[2] = MotorA1_recv_group2_id0.Pos;
 	
+					HAL_Delay(5);
+	
 					modify_speed_cmd(&MotorA1_send_group2,1, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
 					current_pos[3] = MotorA1_recv_group2_id1.Pos;
 	
+					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group3,0, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
 					current_pos[4] = MotorA1_recv_group3_id0.Pos;
 	
+					HAL_Delay(5);
+	
 					modify_speed_cmd(&MotorA1_send_group3,1, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
 					current_pos[5] = MotorA1_recv_group3_id1.Pos;
 					
+					HAL_Delay(5);
 					
 					go_spd_cmd(&Motor_go_send_group4,0,0.0f);
 					unitreeA1_rxtx(&huart4,4);
 					current_pos[6] = Motor_go_recv_group4_id0.Pos;
 					
+					HAL_Delay(5);
+					
 					go_spd_cmd(&Motor_go_send_group4,1,0.0f);
 					unitreeA1_rxtx(&huart4,4);
 					current_pos[7] = Motor_go_recv_group4_id1.Pos;
-
-
-
-
-
-
-
-
+					
+					HAL_Delay(5);
 
 }
 

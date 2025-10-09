@@ -120,7 +120,8 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name></Name>        </SetRegEntry>
+          <Name>
+</Name>        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
@@ -158,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>340</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237664</Address>
+          <Address>134237532</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -174,7 +175,7 @@
           <Type>0</Type>
           <LineNumber>334</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237644</Address>
+          <Address>134237512</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -190,7 +191,7 @@
           <Type>0</Type>
           <LineNumber>326</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237620</Address>
+          <Address>134237488</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -374,6 +375,11 @@
           <count>12</count>
           <WinNumber>2</WinNumber>
           <ItemText>\\H7test\../Core/Src/A1_motor_drive.c\MotorA1_send_group3</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group1_id0</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>

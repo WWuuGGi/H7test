@@ -3,7 +3,7 @@
 <title>Static Call Graph - [H7test\H7test.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image H7test\H7test.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Oct 09 17:34:53 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Oct 09 17:43:13 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1164 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -714,7 +714,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Zero_init_Type1
+<BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_readall
+<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Zero_init_Type1
 </UL>
 
 <P><STRONG><a name="[d6]"></a>HAL_GPIO_Init</STRONG> (Thumb, 456 bytes, Stack size 24 bytes, stm32h7xx_hal_gpio.o(i.HAL_GPIO_Init))
@@ -1124,10 +1125,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[e6]"></a>Joint_readall</STRONG> (Thumb, 236 bytes, Stack size 8 bytes, joint.o(i.Joint_readall))
+<P><STRONG><a name="[e6]"></a>Joint_readall</STRONG> (Thumb, 284 bytes, Stack size 8 bytes, joint.o(i.Joint_readall))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = Joint_readall &rArr; unitreeA1_rxtx &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_spd_cmd
+<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_spd_cmd
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modify_speed_cmd
 </UL>
