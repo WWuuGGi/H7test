@@ -380,7 +380,7 @@ static void calc_zero_return_coeff(Poly5Coeff *coeff,
     // 边界条件：初始角度=当前角度，初始速度/加速度=0；末端角度=零位，末端速度/加速度=0
     calculate_poly5_coeff(coeff,
                          current_angle, 0.0f, 0.0f,  // 起点：位置、速度、加速度
-                         zero_angle,    0.0f, 0.0f,  // 终点：位置、速度、加速度
+                         0.0f,    0.0f, 0.0f,  // 终点：位置、速度、加速度
                          t_total);                    // 总时间
 }
 

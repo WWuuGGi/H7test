@@ -298,31 +298,31 @@ void Joint_zero_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Om
 		// 计算目标位置（叠加零点）
     if (id == 0) {
         switch(group) {
-            case 1: target_pos = +1.0f * Pos[0][step] ; 
+            case 1: target_pos = Pos[0][step] + zero_group1_ID0; 
 										target_spd = Omega[0][step];
 										break;
-            case 2: target_pos = +1.0f * Pos[2][step] ;
+            case 2: target_pos = Pos[2][step] + zero_group2_ID0;
 										target_spd = Omega[2][step];
 										break;
-            case 3: target_pos = -1.0f * Pos[4][step] ; 
-										target_spd = -1.0f * Omega[4][step];
+            case 3: target_pos = Pos[4][step] + zero_group3_ID0; 
+										target_spd = Omega[4][step];
 										break;
-            case 4: target_pos = -1.0f * Pos[6][step] ; 
-										target_spd = -1.0f * Omega[6][step];
+            case 4: target_pos = Pos[6][step] + zero_group4_ID0; 
+										target_spd = Omega[6][step];
 										break;
         }
     } else if (id == 1){
         switch(group) {
-            case 1: target_pos = -1.0f * Pos[1][step]; 
-										target_spd = -1.0f * Omega[1][step];
+            case 1: target_pos = Pos[1][step] + zero_group1_ID1; 
+										target_spd = Omega[1][step];
 										break;
-            case 2: target_pos = -1.0f * Pos[3][step] ; 
-										target_spd = -1.0f * Omega[3][step];
+            case 2: target_pos = Pos[3][step] + zero_group2_ID1; 
+										target_spd = Omega[3][step];
 										break;
-            case 3: target_pos = +1.0f * Pos[5][step] ; 
+            case 3: target_pos = Pos[5][step] + zero_group3_ID1; 
 										target_spd = Omega[5][step];
 										break;
-						case 4: target_pos = Pos[7][step] ; 
+						case 4: target_pos = Pos[7][step] + zero_group4_ID1; 
 										target_spd = Omega[7][step];
 										break;
 				}
@@ -463,49 +463,48 @@ void Joint_readall(void)
 {
 					modify_speed_cmd(&MotorA1_send_group1,0, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
-					current_pos[0] = MotorA1_recv_group1_id0.Pos;
+					current_pos[0] = MotorA1_recv_group1_id0.Pos - zero_group1_ID0;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group1,1, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
-					current_pos[1] = MotorA1_recv_group1_id1.Pos;
-	
+					current_pos[1] = MotorA1_recv_group1_id1.Pos - zero_group1_ID1;
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group2,0, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
-					current_pos[2] = MotorA1_recv_group2_id0.Pos;
+					current_pos[2] = MotorA1_recv_group2_id0.Pos - zero_group2_ID0;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group2,1, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
-					current_pos[3] = MotorA1_recv_group2_id1.Pos;
+					current_pos[3] = MotorA1_recv_group2_id1.Pos - zero_group2_ID1;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group3,0, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
-					current_pos[4] = MotorA1_recv_group3_id0.Pos;
+					current_pos[4] = MotorA1_recv_group3_id0.Pos - zero_group3_ID0;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group3,1, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
-					current_pos[5] = MotorA1_recv_group3_id1.Pos;
+					current_pos[5] = MotorA1_recv_group3_id1.Pos - zero_group3_ID1;
 					
 					HAL_Delay(5);
 					
 					go_spd_cmd(&Motor_go_send_group4,0,0.0f);
 					unitreeA1_rxtx(&huart4,4);
-					current_pos[6] = Motor_go_recv_group4_id0.Pos;
+					current_pos[6] = Motor_go_recv_group4_id0.Pos - zero_group4_ID0;
 					
 					HAL_Delay(5);
 					
 					go_spd_cmd(&Motor_go_send_group4,1,0.0f);
 					unitreeA1_rxtx(&huart4,4);
-					current_pos[7] = Motor_go_recv_group4_id1.Pos;
+					current_pos[7] = Motor_go_recv_group4_id1.Pos - zero_group4_ID1;
 					
 					HAL_Delay(5);
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [H7test\H7test.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image H7test\H7test.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Oct 09 17:43:13 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Oct 09 21:04:38 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1164 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -716,6 +716,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_readall
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Zero_init_Type1
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_relax
 </UL>
 
 <P><STRONG><a name="[d6]"></a>HAL_GPIO_Init</STRONG> (Thumb, 456 bytes, Stack size 24 bytes, stm32h7xx_hal_gpio.o(i.HAL_GPIO_Init))
@@ -735,9 +736,9 @@ Global Symbols
 
 <P><STRONG><a name="[a3]"></a>HAL_GetTick</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32h7xx_hal.o(i.HAL_GetTick))
 <BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Key_StateMachine
-<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL3_Config
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL2_Config
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCCEx_PeriphCLKConfig
@@ -944,8 +945,8 @@ Global Symbols
 <P><STRONG><a name="[bd]"></a>HAL_TIM_Base_Init</STRONG> (Thumb, 110 bytes, Stack size 8 bytes, stm32h7xx_hal_tim.o(i.HAL_TIM_Base_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Base_SetConfig
-<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_MspInit
+<BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_MspInit
+<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Base_SetConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM2_Init
 </UL>
@@ -981,14 +982,14 @@ Global Symbols
 <P><STRONG><a name="[c6]"></a>HAL_TIM_IRQHandler</STRONG> (Thumb, 408 bytes, Stack size 16 bytes, stm32h7xx_hal_tim.o(i.HAL_TIM_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1156<LI>Call Chain = HAL_TIM_IRQHandler &rArr; HAL_TIM_PeriodElapsedCallback &rArr; Task_Execute &rArr; cdpr_init &rArr; generate_trajectory_and_angles &rArr; get_rotation_matrix &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_TriggerCallback
+<BR>[Calls]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
+<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_TriggerCallback
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_PulseFinishedCallback
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_OC_DelayElapsedCallback
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_IC_CaptureCallback
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIMEx_CommutCallback
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIMEx_BreakCallback
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIMEx_Break2Callback
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM2_IRQHandler
 </UL>
@@ -1116,27 +1117,27 @@ Global Symbols
 <P><STRONG><a name="[e3]"></a>Joint_Zero_init_Type1</STRONG> (Thumb, 392 bytes, Stack size 8 bytes, joint.o(i.Joint_Zero_init_Type1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = Joint_Zero_init_Type1 &rArr; unitreeA1_rxtx &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Zero_OK
+<BR>[Calls]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Joint_Zero_OK
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_torque_cmd
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modify_torque_cmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[e6]"></a>Joint_readall</STRONG> (Thumb, 284 bytes, Stack size 8 bytes, joint.o(i.Joint_readall))
+<P><STRONG><a name="[e6]"></a>Joint_readall</STRONG> (Thumb, 400 bytes, Stack size 8 bytes, joint.o(i.Joint_readall))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = Joint_readall &rArr; unitreeA1_rxtx &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_spd_cmd
+<BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_spd_cmd
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modify_speed_cmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Execute
 </UL>
 
-<P><STRONG><a name="[dd]"></a>Joint_zero_Control</STRONG> (Thumb, 596 bytes, Stack size 56 bytes, joint.o(i.Joint_zero_Control))
+<P><STRONG><a name="[dd]"></a>Joint_zero_Control</STRONG> (Thumb, 588 bytes, Stack size 56 bytes, joint.o(i.Joint_zero_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = Joint_zero_Control &rArr; unitreeA1_rxtx &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_pw_cmd
@@ -1524,10 +1525,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Task_Execute
 </UL>
 
-<P><STRONG><a name="[fd]"></a>motor_relax</STRONG> (Thumb, 164 bytes, Stack size 8 bytes, a1_motor_drive.o(i.motor_relax))
+<P><STRONG><a name="[fd]"></a>motor_relax</STRONG> (Thumb, 212 bytes, Stack size 8 bytes, a1_motor_drive.o(i.motor_relax))
 <BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = motor_relax &rArr; unitreeA1_rxtx &rArr; HAL_UART_Transmit &rArr; UART_WaitOnFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;go_torque_cmd
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;unitreeA1_rxtx
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modify_torque_cmd
 </UL>

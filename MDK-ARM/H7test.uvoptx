@@ -120,8 +120,8 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>
-</Name>        </SetRegEntry>
+          <Name>*</Name>
+        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
@@ -159,7 +159,7 @@
           <Type>0</Type>
           <LineNumber>340</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237532</Address>
+          <Address>134237816</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -175,7 +175,7 @@
           <Type>0</Type>
           <LineNumber>334</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237512</Address>
+          <Address>134237796</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -191,7 +191,7 @@
           <Type>0</Type>
           <LineNumber>326</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237488</Address>
+          <Address>134237772</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -297,17 +297,7 @@
         <Ww>
           <count>18</count>
           <WinNumber>1</WinNumber>
-          <ItemText>\\H7test\../Core/Src/joint.c\current_pos[2]</ItemText>
-        </Ww>
-        <Ww>
-          <count>19</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\H7test\../Core/Src/joint.c\current_pos[2]</ItemText>
-        </Ww>
-        <Ww>
-          <count>20</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>\\H7test\../Core/Src/joint.c\current_pos[2]</ItemText>
+          <ItemText>zero_return_omega</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -379,7 +369,57 @@
         <Ww>
           <count>13</count>
           <WinNumber>2</WinNumber>
-          <ItemText>MotorA1_recv_group1_id0</ItemText>
+          <ItemText>MotorA1_recv_group1_id0.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group1_id1.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group2_id0.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>16</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group2_id1.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>17</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group3_id0.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>MotorA1_recv_group3_id1.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>19</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Motor_go_recv_group4_id0.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>20</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Motor_go_recv_group4_id1.Pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>21</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Motor_go_recv_group4_id0</ItemText>
+        </Ww>
+        <Ww>
+          <count>22</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>target_pos</ItemText>
+        </Ww>
+        <Ww>
+          <count>23</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>target_spd</ItemText>
         </Ww>
       </WatchWindow2>
       <MemoryWindow4>

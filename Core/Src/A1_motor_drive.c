@@ -235,7 +235,7 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 //						break;
 //				}
 //				
-				trans_st[group-1] = HAL_UART_Transmit(huart, send_buf, 34, 1);
+				trans_st[group-1] = HAL_UART_Transmit(huart, send_buf, 34, 2);
 				
 //				switch(group)	//使能
 //				{
@@ -248,7 +248,7 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 //						break;
 //				}
 				
-				rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 1);
+				rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 2);
 				
 				err_state = HAL_UART_GetError(huart);
 				received = 78 - huart->RxXferCount;
@@ -298,12 +298,12 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 			// 2. 硬件使能控制（与原有group4一致）
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_SET);
 			// 发送go协议数据包（RIS_ControlData_t为17字节）
-			trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 1);
+			trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 2);
 		
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_RESET);
 
 			// 3. 接收go协议数据（RIS_MotorData_t为16字节）
-			rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 1);
+			rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 2);
 
 			// 4. 解析接收数据（使用go_protocol的extract_data）
 			// 先将接收缓冲区数据拷贝到MotorData_t的接收结构体
@@ -328,23 +328,37 @@ void motor_relax(void)
 {
 	modify_torque_cmd(&MotorA1_send_group1,0, 0.0f);
 	unitreeA1_rxtx(&huart1,1);
+	HAL_Delay(1);
+	
 	modify_torque_cmd(&MotorA1_send_group1,1, 0.0f);
 	unitreeA1_rxtx(&huart1,1);
+	HAL_Delay(1);
 
 	modify_torque_cmd(&MotorA1_send_group2,0, 0.0f);
 	unitreeA1_rxtx(&huart2,2);
+	HAL_Delay(1);	
+	
 	modify_torque_cmd(&MotorA1_send_group2,1, 0.0f);
 	unitreeA1_rxtx(&huart2,2);
-
+	HAL_Delay(1);
+	
+	
 	modify_torque_cmd(&MotorA1_send_group3,0, 0.0f);
 	unitreeA1_rxtx(&huart8,3);
+	HAL_Delay(1);
+	
 	modify_torque_cmd(&MotorA1_send_group3,1, 0.0f);
 	unitreeA1_rxtx(&huart8,3);
+	HAL_Delay(1);
 	
 	go_torque_cmd(&Motor_go_send_group4,0,0.0f);
 	unitreeA1_rxtx(&huart4,4);
+	HAL_Delay(1);
+	
 	go_torque_cmd(&Motor_go_send_group4,1,0.0f);
 	unitreeA1_rxtx(&huart4,4);
+	HAL_Delay(1);
+
 
 }
 
