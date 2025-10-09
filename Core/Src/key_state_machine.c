@@ -183,20 +183,25 @@ static void Key_HandleEvents(void) {
     // 只有任务运行时，才处理K1的模式切换
     if (task_running) {
         // 处理K1按键事件 - 模式切换
-        if (key1.event == KEY_EVENT_CLICK) {
-            // 单击切换到模式1
+        if (key1.event == KEY_EVENT_CLICK) 
+				{
+            // 切换到模式1
             current_mode = 1;
-        } else if (key2.event == KEY_EVENT_CLICK) {
-            // 双击切换到模式2
+        } 
+				else if (key2.event == KEY_EVENT_CLICK) 
+				{
+            // 切换到模式2
             current_mode = 2;
         }
-    }else
-				{
-						if (key3.event == KEY_EVENT_CLICK) {
-						// 长按切换到模式3
+    }
+		if (key3.event == KEY_EVENT_CLICK) {
+						// 切换到模式3
 						current_mode = 3;
+						task_running = 0;
+						step_mode_1 = 0;
+						step_mode_2 = 0;
+						step_mode_3 = 0;
 						}
-				}
 		
 
 }
