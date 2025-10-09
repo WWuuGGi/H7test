@@ -121,7 +121,7 @@ int main(void)
 //				 HAL_Delay(1);
 //	 }
 	
-	//Joint_Zero_init_Type1();
+	Joint_Zero_init_Type1();
 	HAL_TIM_Base_Start_IT(&htim2);
 
 //	modify_changeid_cmd(&MotorA1_send_group2,10);
@@ -144,12 +144,14 @@ int main(void)
 //		HAL_UART_Transmit(&huart1,Data,5,1);
 //		HAL_Delay(1);
 		
-		cstate = Key_GetTaskState();
-		cmode = Key_GetCurrentMode();
+		//cstate = Key_GetTaskState();
+		
 		now1 = HAL_GetTick();
+		
+		//cmode = Key_GetCurrentMode();
 	
-		if (cstate) {
-			if(cmode == 0 && zero_init == 1)
+		if (task_running) {
+			if(current_mode == 0 && zero_init == 1)
 			{
 			 	zero_group1_ID0 = 0.0f;
 			 	zero_group1_ID1 = 0.0f;
@@ -163,7 +165,7 @@ int main(void)
 			 	zero_group4_ID0 = 0.0f;
 			 	zero_group4_ID1 = 0.0f;
 			 	zero_init = 0;
-				//Joint_Zero_init_Type1();
+				Joint_Zero_init_Type1();
 			}
 
 

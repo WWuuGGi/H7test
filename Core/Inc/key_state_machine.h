@@ -58,6 +58,9 @@ typedef struct {
     uint8_t stable_pin_state;    // 经过消抖后的稳定引脚状态
 } KeyTypeDef;
 
+
+extern uint8_t task_running;    // 任务运行标志
+extern uint8_t current_mode;    // 当前模式
 extern uint16_t step_mode_1;
 extern uint16_t step_mode_2;
 extern uint16_t step_mode_3;

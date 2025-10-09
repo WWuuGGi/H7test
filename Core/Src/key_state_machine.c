@@ -21,8 +21,8 @@ static KeyTypeDef key3 = {K3_GPIO_Port, K3_Pin, KEY_STATE_IDLE, 0, 0, 0, 0, KEY_
 static KeyTypeDef key4 = {K4_GPIO_Port, K4_Pin, KEY_STATE_IDLE, 0, 0, 0, 0, KEY_EVENT_NONE,0,0};
 
 // 全局变量
-static uint8_t task_running = 0;    // 任务运行标志
-static uint8_t current_mode = 0;    // 当前模式
+uint8_t task_running = 0;    // 任务运行标志
+uint8_t current_mode = 0;    // 当前模式
 
 // 函数声明
 static uint8_t Key_ReadPin(KeyTypeDef* key);
@@ -313,7 +313,7 @@ void Task_Execute(void) {
             break;
         default:
             // 默认模式处理
-            current_mode = 0;
+            //current_mode = 0;
             break;
     }
 	}
@@ -361,10 +361,7 @@ void Task_Execute(void) {
 
 			}
 		}
-	else
-	{
-	motor_relax();
-	}
+
 }
 
 

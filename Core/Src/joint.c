@@ -447,6 +447,7 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id) {
 						
 						default: 
 							break;
+				}
 						
 				if (group == 4)
 				{
@@ -473,7 +474,8 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id) {
 						}
 				}
 
-	}
+				return 0.0f;
+
 }
 
 
