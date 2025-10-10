@@ -425,23 +425,32 @@ void Joint_Full_Position_Control(uint16_t step)
 	
 }
 
+//b1 - G3 ID 1
+//b2 - G3 ID 0
+//b3 - G4 ID 1
+//b4 - G4 ID 0
+//b5 - G1 ID 1
+//b6 - G1 ID 0 
+//b7 - G2 ID 1
+//b8 - G2 ID 0 
+
 void Joint_Full_PW_Control(uint16_t step)
 {
-	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
 	
-	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
 
-	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
 	
-	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
 
-	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
 	
-	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.022f, 0.1f, step);
+	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
 	
-	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.21f, 0.001f, step);
+	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.24f, 0.001f, step);
 	
-	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.21f, 0.001f, step);
+	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.24f, 0.001f, step);
 }
 
 void Joint_Full_zero_Control(uint16_t step)

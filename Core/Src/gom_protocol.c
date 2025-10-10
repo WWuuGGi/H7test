@@ -24,7 +24,7 @@ void go_spd_cmd(MotorCmd_t *cmd,uint8_t id,float spd)
 	cmd->id = id;
 	cmd->mode = 1;
 	cmd->K_P = 0.0f;
-	cmd->K_W = 0.03f;
+	cmd->K_W = 0.06f;
 	cmd->Pos = 0.0f;
 	cmd->W = spd*6.33f;//»¡¶ÈÖÆ
 	cmd->T = 0;

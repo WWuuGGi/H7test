@@ -230,6 +230,19 @@ void Task_Execute(void) {
 									current_segment = 0;  // 重置段索引，便于下次启动
 									break;
 							}
+							zero_group1_ID0 = 0.0f;
+							zero_group1_ID1 = 0.0f;
+
+							zero_group2_ID0 = 0.0f;
+							zero_group2_ID1 = 0.0f;
+
+							zero_group3_ID0 = 0.0f;
+							zero_group3_ID1 = 0.0f;
+
+							zero_group4_ID0 = 0.0f;
+							zero_group4_ID1 = 0.0f;
+							Joint_Zero_init_Type2();
+							
 							// 当前段的起点 = 上一段的终点（首段起点为waypoints[0]）
 							Pose start_pose = waypoints[current_segment];
 							// 当前段的终点 = 下一个路点
@@ -267,21 +280,8 @@ void Task_Execute(void) {
 							if (step_mode_1 >= STEP_NUM) {
 									step_mode_1 = 0;  // 重置当前段的步计数器
 									current_segment++;  // 切换到下一段
-								
-									zero_group1_ID0 = 0.0f;
-									zero_group1_ID1 = 0.0f;
-
-									zero_group2_ID0 = 0.0f;
-									zero_group2_ID1 = 0.0f;
-
-									zero_group3_ID0 = 0.0f;
-									zero_group3_ID1 = 0.0f;
-
-									zero_group4_ID0 = 0.0f;
-									zero_group4_ID1 = 0.0f;
-									Joint_Zero_init_Type2();
 							}
-							//Joint_Full_PW_Control(step_mode_1 - 1);
+							Joint_Full_PW_Control(STEP_NUM- 1);
 						}
 					}
 					else
