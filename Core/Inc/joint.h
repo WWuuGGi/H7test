@@ -11,7 +11,7 @@
 #define RAD2DGR 180/PI
 #define False 0
 #define True 1
-#define ANGLE_TOLERANCE 1.0f  // 角度容忍阈值（度），可根据需求调整
+#define ANGLE_TOLERANCE 5.0f  // 角度容忍阈值（度），可根据需求调整
 #define BOUNDRY 1
 #define ZERO_RETURN 3
 
@@ -48,6 +48,7 @@ extern float zero_group4_ID1;
 
 extern float zeros[CABLE_NUM];
 extern float current_pos[CABLE_NUM];
+extern float traj_start_angles[CABLE_NUM];
 
 
 

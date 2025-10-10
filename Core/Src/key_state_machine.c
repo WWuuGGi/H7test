@@ -348,6 +348,8 @@ void Task_Execute(void) {
 	{
 			if(step_mode_3 == 0)
 			{
+					step_mode_1 =0;
+					step_mode_2 = 0;
 					Joint_readall();
 					motor_init_zero_return(current_pos,zeros,5.0f);
 					if (!check_angle_with_start(ZERO_RETURN)) {

@@ -27,6 +27,8 @@ float zero_group4_ID1 = 0.0f;
 float current_pos[CABLE_NUM];
 float zeros[CABLE_NUM];
 
+float traj_start_angles[CABLE_NUM] ={0};
+
 uint8_t continuity = 1;
 
 uint8_t STOP = False;
@@ -586,7 +588,6 @@ uint8_t check_angle_with_start(uint8_t mode) {
     
     // 1. 读取当前所有电机的实际角度
     Joint_readall();
-	  float traj_start_angles[CABLE_NUM] ={0};
 		uint8_t orders[CABLE_NUM] = {5,4,7,6,1,0,3,2};
     
 		//b1 - G3 ID 1

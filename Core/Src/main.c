@@ -177,11 +177,6 @@ int main(void)
 				zeros[7] = zero_group4_ID1;
 			}
 
-
-			
-			
-			
-			
 //			if (data_logging)
 //				{
 //						calculate_errors(motor_angle[6][step_mode_3], motor_omega[6][step_mode_3]);

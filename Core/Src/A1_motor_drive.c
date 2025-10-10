@@ -237,8 +237,6 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 //						break;
 //				}
 //				
-				trans_st[group-1] = HAL_UART_Transmit(huart, send_buf, 34, 2);
-				
 //				switch(group)	//使能
 //				{
 //					case 1:
@@ -256,8 +254,9 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 				uint8_t retry = 3;  // 最多重试3次
 				rec_st[group-1] = HAL_ERROR;
 				while (retry-- > 0 && rec_st[group-1] != HAL_OK) {
+						trans_st[group-1] = HAL_UART_Transmit(huart, send_buf, 34, 1);
 						memset(recv_buf, 0, 78);  // 每次重试前清空缓冲区
-						rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 2);  // 超时10ms
+						rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 5);  // 超时10ms
 				}
 				
 				err_state = HAL_UART_GetError(huart);
