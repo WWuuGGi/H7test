@@ -21,6 +21,8 @@ float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度
 float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
 Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
+Poly5Coeff circle_coeffs;
+
 // 初始化多段路径的路点（A→B→C→D）
 Pose waypoints[TOTAL_WAYPOINTS] = {//9段10个点
     // 点1（起点）
@@ -222,6 +224,133 @@ static void generate_trajectory_and_angles(float32_t t_start, float32_t t_end, f
             current_vel.data[j] = coeffs[j].a1 + 2*coeffs[j].a2*t + 3*coeffs[j].a3*t2 +
                                 4*coeffs[j].a4*t3 + 5*coeffs[j].a5*t4;
         }
+
+        // 构建齐次变换矩阵
+        Matrix4f trans, rot, Tr;
+        get_translation_matrix(&trans, current_pose.data[0], current_pose.data[1], current_pose.data[2]);
+        get_rotation_matrix(&rot, current_pose.data[3], current_pose.data[4], current_pose.data[5]);
+        matrix_multiply(&Tr, &trans, &rot);
+
+        // 计算每条绳索的长度并转换为电机角度
+        for (uint8_t c = 0; c < CABLE_NUM; c++) {
+            // 附着点全局坐标
+            Point4f a_g = point_mult_matrix(&attach_e[c], &Tr);
+            
+            // 绳索向量与长度
+            float32_t vec_cable[3] = {
+                base_g[c].x - a_g.x,
+                base_g[c].y - a_g.y,
+                base_g[c].z - a_g.z
+            };
+            float32_t current_length = vector_norm(vec_cable);
+
+            // 存储初始长度(第0步)
+            if (i == 0) {
+                cable_initial_length[c] = current_length;
+            }
+
+            // 计算电机角度并存储(仅保留此结果)
+            float32_t length_change = current_length - cable_initial_length[c];
+            
+						if(c != 2 && c != 3)
+						{
+							motor_angle[c][i] = length_change / MOTOR_PULLEY_RADIUS / 3.1415926f * 180.0f;
+						}
+						else
+						{
+							motor_angle[c][i] = length_change / GO_PULLEY_RADIUS / 3.1415926f * 180.0f;
+						}
+						
+						//        // 计算每个绳索的长度和速度
+						float32_t jaco[CABLE_NUM][6]; // 雅克比矩阵 (8x6)
+						
+						// 单位向量
+            float32_t unit_vec[3] = {
+                vec_cable[0] / current_length,
+                vec_cable[1] / current_length,
+                vec_cable[2] / current_length
+            };
+
+            // 末端执行器上的向量 (质心到附着点)
+            float32_t vec_ee[3] = {
+                a_g.x - current_pose.data[0],
+                a_g.y - current_pose.data[1],
+                a_g.z - current_pose.data[2]
+            };
+
+            // 叉乘结果
+            float32_t cross_res[3];
+            cross_product(cross_res, vec_ee, unit_vec);
+
+            // 填充雅克比矩阵
+            jaco[c][0] = unit_vec[0];
+            jaco[c][1] = unit_vec[1];
+            jaco[c][2] = unit_vec[2];
+            jaco[c][3] = cross_res[0];
+            jaco[c][4] = cross_res[1];
+            jaco[c][5] = cross_res[2];
+
+            // 计算绳索速度
+            motor_omega[c][i] = 0.0f;
+            for (uint8_t k = 0; k < 6; k++) {
+							if(c != 2 && c != 3)
+							{
+                motor_omega[c][i] += -1.0f * jaco[c][k] * current_vel.data[k] / MOTOR_PULLEY_RADIUS;
+							}
+							else
+							{
+								motor_omega[c][i] += -1.0f * jaco[c][k] * current_vel.data[k] / GO_PULLEY_RADIUS;
+							}
+							
+							
+						}
+        }
+    }
+}
+
+static void generate_trajectory_circle(float32_t t_start, float32_t t_end, float32_t t_step,const Pose* center,float circle_radius,
+                                         const float start_theta, const float start_vel, const float start_acc,
+                                         const float end_theta, const float end_vel, const float end_acc) {
+    float32_t t_total = t_end - t_start;
+    
+    // 计算多项式系数(仅存储系数，不存储完整轨迹)
+    for (uint8_t i = 0; i < 6; i++) {
+        calculate_poly5_coeff(&circle_coeffs,
+                             start_theta, start_vel, start_acc,
+                             end_theta, end_vel, end_acc,
+                             t_total);
+    }
+
+    // 逐个时间步计算，直接生成电机角度
+    for (uint16_t i = 0; i < STEP_NUM; i++) {
+        float32_t t = t_start + i * t_step;
+        float32_t t2 = t * t;
+        float32_t t3 = t2 * t;
+        float32_t t4 = t3 * t;
+        float32_t t5 = t4 * t;
+
+        // 计算当前时刻的姿态(局部变量，不存储)
+        Pose current_pose;
+        Velocity current_vel;
+				float theta = circle_coeffs.a0 + circle_coeffs.a1*t + circle_coeffs.a2*t2 +
+                                 circle_coeffs.a3*t3 + circle_coeffs.a4*t4 + circle_coeffs.a5*t5;
+				float theta_dot = circle_coeffs.a1 + 2*circle_coeffs.a2*t + 3*circle_coeffs.a3*t2 +
+                                4*circle_coeffs.a4*t3 + 5*circle_coeffs.a5*t4;
+				
+				current_pose.data[0] = center->data[0] + circle_radius*cosf(theta);
+				current_pose.data[1] = center->data[1] + circle_radius*sinf(theta);
+				current_pose.data[2] = center->data[2];
+				current_pose.data[3] = center->data[3];
+				current_pose.data[4] = center->data[4];
+				current_pose.data[5] = center->data[5];
+				
+				current_vel.data[0] = -1.0f * circle_radius * sinf(theta) * theta_dot;
+				current_vel.data[1] = 			  circle_radius * cosf(theta) * theta_dot;
+				current_vel.data[2] = 0.0f;
+				current_vel.data[3] = 0.0f;
+				current_vel.data[4] = 0.0f;
+				current_vel.data[5] = 0.0f;
+				
 
         // 构建齐次变换矩阵
         Matrix4f trans, rot, Tr;
