@@ -27,6 +27,7 @@ float zero_group4_ID1 = 0.0f;
 float current_pos[CABLE_NUM];
 float zeros[CABLE_NUM];
 
+uint8_t continuity = 1;
 
 uint8_t STOP = False;
 
@@ -131,14 +132,80 @@ void Joint_Zero_init_Type1()
 			
 			HAL_Delay(5);
 	}
-			zeros[0] = zero_group1_ID0;
-			zeros[1] = zero_group1_ID1;
-			zeros[2] = zero_group2_ID0;
-			zeros[3] = zero_group2_ID1;
-			zeros[4] = zero_group3_ID0;
-			zeros[5] = zero_group3_ID1;
-			zeros[6] = zero_group4_ID0;
-			zeros[7] = zero_group4_ID1;
+
+}
+
+void Joint_Zero_init_Type2()
+{
+  // 电机零位 默认为1000，为了循环判断所以这么写 
+  // 电机零位 定义在最上面
+  // 使用while循环确保0位正确
+
+  while (!Joint_Zero_OK()) 
+		{
+		//group1
+			
+			// 读取ID0零点
+			modify_speed_cmd(&MotorA1_send_group1, 0, 0.0f);
+			unitreeA1_rxtx(&huart1, 1);
+			zero_group1_ID0 = MotorA1_recv_group1_id0.Pos;
+			
+			HAL_Delay(5);
+			
+			// 读取ID1零点
+			modify_speed_cmd(&MotorA1_send_group1, 1, 0.0f);
+			unitreeA1_rxtx(&huart1, 1);
+			zero_group1_ID1 = MotorA1_recv_group1_id1.Pos;
+			
+			HAL_Delay(5);
+			
+			
+			//group2
+			// 读取ID0零点
+			modify_speed_cmd(&MotorA1_send_group2, 0, 0.0f);
+			unitreeA1_rxtx(&huart2, 2);
+			zero_group2_ID0 = MotorA1_recv_group2_id0.Pos;
+			
+			HAL_Delay(5);
+			
+			// 读取ID1零点
+			modify_speed_cmd(&MotorA1_send_group2, 1, 0.0f);
+			unitreeA1_rxtx(&huart2, 2);
+			zero_group2_ID1 = MotorA1_recv_group2_id1.Pos;
+			
+			HAL_Delay(5);
+			
+			//group3
+			// 读取ID0零点
+			modify_speed_cmd(&MotorA1_send_group3, 0, 0.0f);
+			unitreeA1_rxtx(&huart8, 3);
+			zero_group3_ID0 = MotorA1_recv_group3_id0.Pos;
+			
+			HAL_Delay(5);
+		
+			// 读取ID1零点
+			modify_speed_cmd(&MotorA1_send_group3, 1, 0.0f);
+			unitreeA1_rxtx(&huart8, 3);
+			zero_group3_ID1 = MotorA1_recv_group3_id1.Pos;
+			
+			HAL_Delay(5);
+			
+			//group4
+			// 读取ID0零点
+			go_spd_cmd(&Motor_go_send_group4,0,0.0f);
+			unitreeA1_rxtx(&huart4,4);
+			zero_group4_ID0 = Motor_go_recv_group4_id0.Pos;
+			
+			HAL_Delay(5);
+
+			// 读取ID1零点
+			go_spd_cmd(&Motor_go_send_group4,1,0.0f);
+			unitreeA1_rxtx(&huart4,4);
+			zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
+			
+			HAL_Delay(5);
+	}
+
 }
 
 
@@ -298,31 +365,31 @@ void Joint_zero_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Om
 		// 计算目标位置（叠加零点）
     if (id == 0) {
         switch(group) {
-            case 1: target_pos = Pos[0][step] + zero_group1_ID0; 
+            case 1: target_pos = Pos[0][step] + zeros[0]; 
 										target_spd = Omega[0][step];
 										break;
-            case 2: target_pos = Pos[2][step] + zero_group2_ID0;
+            case 2: target_pos = Pos[2][step] + zeros[2];
 										target_spd = Omega[2][step];
 										break;
-            case 3: target_pos = Pos[4][step] + zero_group3_ID0; 
+            case 3: target_pos = Pos[4][step] + zeros[4]; 
 										target_spd = Omega[4][step];
 										break;
-            case 4: target_pos = Pos[6][step] + zero_group4_ID0; 
+            case 4: target_pos = Pos[6][step] + zeros[6]; 
 										target_spd = Omega[6][step];
 										break;
         }
     } else if (id == 1){
         switch(group) {
-            case 1: target_pos = Pos[1][step] + zero_group1_ID1; 
+            case 1: target_pos = Pos[1][step] + zeros[1]; 
 										target_spd = Omega[1][step];
 										break;
-            case 2: target_pos = Pos[3][step] + zero_group2_ID1; 
+            case 2: target_pos = Pos[3][step] + zeros[3]; 
 										target_spd = Omega[3][step];
 										break;
-            case 3: target_pos = Pos[5][step] + zero_group3_ID1; 
+            case 3: target_pos = Pos[5][step] + zeros[5]; 
 										target_spd = Omega[5][step];
 										break;
-						case 4: target_pos = Pos[7][step] + zero_group4_ID1; 
+						case 4: target_pos = Pos[7][step] + zeros[7]; 
 										target_spd = Omega[7][step];
 										break;
 				}
@@ -463,52 +530,121 @@ void Joint_readall(void)
 {
 					modify_speed_cmd(&MotorA1_send_group1,0, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
-					current_pos[0] = MotorA1_recv_group1_id0.Pos - zero_group1_ID0;
+					current_pos[0] = MotorA1_recv_group1_id0.Pos;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group1,1, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
-					current_pos[1] = MotorA1_recv_group1_id1.Pos - zero_group1_ID1;
+					current_pos[1] = MotorA1_recv_group1_id1.Pos;
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group2,0, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
-					current_pos[2] = MotorA1_recv_group2_id0.Pos - zero_group2_ID0;
+					current_pos[2] = MotorA1_recv_group2_id0.Pos;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group2,1, 0.0f);
 					unitreeA1_rxtx(&huart2,2);
-					current_pos[3] = MotorA1_recv_group2_id1.Pos - zero_group2_ID1;
+					current_pos[3] = MotorA1_recv_group2_id1.Pos;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group3,0, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
-					current_pos[4] = MotorA1_recv_group3_id0.Pos - zero_group3_ID0;
+					current_pos[4] = MotorA1_recv_group3_id0.Pos;
 	
 					HAL_Delay(5);
 	
 					modify_speed_cmd(&MotorA1_send_group3,1, 0.0f);
 					unitreeA1_rxtx(&huart8,3);
-					current_pos[5] = MotorA1_recv_group3_id1.Pos - zero_group3_ID1;
+					current_pos[5] = MotorA1_recv_group3_id1.Pos;
 					
 					HAL_Delay(5);
 					
 					go_spd_cmd(&Motor_go_send_group4,0,0.0f);
 					unitreeA1_rxtx(&huart4,4);
-					current_pos[6] = Motor_go_recv_group4_id0.Pos - zero_group4_ID0;
+					current_pos[6] = Motor_go_recv_group4_id0.Pos;
 					
 					HAL_Delay(5);
 					
 					go_spd_cmd(&Motor_go_send_group4,1,0.0f);
 					unitreeA1_rxtx(&huart4,4);
-					current_pos[7] = Motor_go_recv_group4_id1.Pos - zero_group4_ID1;
+					current_pos[7] = Motor_go_recv_group4_id1.Pos;
 					
 					HAL_Delay(5);
 
 }
 
+
+/**
+ * @brief 检查当前角度是否与轨迹起点角度一致（在容忍阈值内）
+ * @return 1：角度一致，可执行轨迹；0：角度不一致，需停止任务
+ */
+uint8_t check_angle_with_start(uint8_t mode) {
+    
+    // 1. 读取当前所有电机的实际角度
+    Joint_readall();
+	  float traj_start_angles[CABLE_NUM] ={0};
+		uint8_t orders[CABLE_NUM] = {5,4,7,6,1,0,3,2};
+    
+		//b1 - G3 ID 1
+		//b2 - G3 ID 0
+		//b3 - G4 ID 1
+		//b4 - G4 ID 0
+		//b5 - G1 ID 1
+		//b6 - G1 ID 0 
+		//b7 - G2 ID 1
+		//b8 - G2 ID 0 
+			
+    // 2. 逐个电机比较当前角度与轨迹起点角度
+	switch(mode)
+	{
+		case BOUNDRY:
+				traj_start_angles[0] = motor_angle[orders[0]][0] + zero_group1_ID0;
+				traj_start_angles[1] = motor_angle[orders[1]][0] + zero_group1_ID1;
+				traj_start_angles[2] = motor_angle[orders[2]][0] + zero_group2_ID0;
+				traj_start_angles[3] = motor_angle[orders[3]][0] + zero_group2_ID1;
+				traj_start_angles[4] = motor_angle[orders[4]][0] + zero_group3_ID0;
+				traj_start_angles[5] = motor_angle[orders[5]][0] + zero_group3_ID1;
+				traj_start_angles[6] = motor_angle[orders[6]][0] + zero_group4_ID0;
+				traj_start_angles[7] = motor_angle[orders[7]][0] + zero_group4_ID1;
+		
+				for (uint8_t c = 0; c < CABLE_NUM; c++) {
+						float32_t angle_diff = fabsf(current_pos[c] - traj_start_angles[c]);
+						if (angle_diff > ANGLE_TOLERANCE) {
+								// 单个电机角度偏差超限，打印错误信息;
+								continuity = 0;
+								return 0;  // 校验失败
+						}
+				}
+				break;
+		case ZERO_RETURN:
+				traj_start_angles[0] = zero_return_angle[0][0] + zeros[0];
+				traj_start_angles[1] = zero_return_angle[1][0] + zeros[1];
+				traj_start_angles[2] = zero_return_angle[2][0] + zeros[2];
+				traj_start_angles[3] = zero_return_angle[3][0] + zeros[3];
+				traj_start_angles[4] = zero_return_angle[4][0] + zeros[4];
+				traj_start_angles[5] = zero_return_angle[5][0] + zeros[5];
+				traj_start_angles[6] = zero_return_angle[6][0] + zeros[6];
+				traj_start_angles[7] = zero_return_angle[7][0] + zeros[7];
+		
+				for (uint8_t c = 0; c < CABLE_NUM; c++) {
+						float32_t angle_diff = fabsf(current_pos[c] - traj_start_angles[c]);
+						if (angle_diff > ANGLE_TOLERANCE) {
+								// 单个电机角度偏差超限，打印错误信息;
+								continuity = 0;
+								return 0;  // 校验失败
+						}
+				}
+				break;
+		default:
+					return 0;
+	}
+    // 3. 所有电机角度均在阈值内，校验通过
+		continuity = 1;
+    return 1;
+}
 
 

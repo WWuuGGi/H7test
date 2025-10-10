@@ -161,7 +161,7 @@ static void Key_HandleEvents(void) {
             step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
-
+						current_segment = 0;
 						//调成零力矩模式，等待拖拽回中
 						//motor_relax();
 					
@@ -173,7 +173,7 @@ static void Key_HandleEvents(void) {
 						step_mode_2 = 0;
 						step_mode_3 = 0;
 						zero_init = 1;
-					
+						current_segment = 0;
 						//调成零力矩模式，等待接收指令
 						//motor_relax();
             
@@ -223,17 +223,17 @@ void Task_Execute(void) {
 					{
 						if(step_mode_1 == 0)
 						{
-							//初次进入任务时，把其他标志位清零
-							//step_mode_2 = 0;
-							//step_mode_3 = 0;
-							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
-							Pose end_pose = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
-//							switch(turn)
-//							{
-//								case 1:
-//									start_pose.data[0] = 0.0f;
-//									start_pose.data[1] = 0.0f;
-//							}
+							// 检查是否所有段都执行完毕
+							if (current_segment >= PATH_SEGMENTS) {
+									task_running = 0;  // 所有段完成，停止任务
+									step_mode_1 = 0;
+									current_segment = 0;  // 重置段索引，便于下次启动
+									break;
+							}
+							// 当前段的起点 = 上一段的终点（首段起点为waypoints[0]）
+							Pose start_pose = waypoints[current_segment];
+							// 当前段的终点 = 下一个路点
+							Pose end_pose = waypoints[current_segment + 1];
 							
 							// 初始速度和加速度为零
 							Velocity start_vel = {0};
@@ -241,6 +241,13 @@ void Task_Execute(void) {
 							Acceleration start_acc = {0};
 							Acceleration end_acc = {0};
 							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
+						
+							// 执行角度校验：当前角度是否与轨迹起点一致
+							if (!check_angle_with_start(BOUNDRY)) {
+									task_running = 0;  // 校验失败，停止任务
+									break;  // 退出模式1执行
+							}
+							
 						}
 						
 						if(step_mode_1 < STEP_NUM && task_running)
@@ -256,7 +263,25 @@ void Task_Execute(void) {
 						}
 						else
 						{
-							Joint_Full_PW_Control(step_mode_1 - 1);
+							// 当前段执行完毕，准备切换到下一段
+							if (step_mode_1 >= STEP_NUM) {
+									step_mode_1 = 0;  // 重置当前段的步计数器
+									current_segment++;  // 切换到下一段
+								
+									zero_group1_ID0 = 0.0f;
+									zero_group1_ID1 = 0.0f;
+
+									zero_group2_ID0 = 0.0f;
+									zero_group2_ID1 = 0.0f;
+
+									zero_group3_ID0 = 0.0f;
+									zero_group3_ID1 = 0.0f;
+
+									zero_group4_ID0 = 0.0f;
+									zero_group4_ID1 = 0.0f;
+									Joint_Zero_init_Type2();
+							}
+							//Joint_Full_PW_Control(step_mode_1 - 1);
 						}
 					}
 					else
@@ -276,8 +301,8 @@ void Task_Execute(void) {
 								//step_mode_3 = 0;
 								
 								//初次进入时，计算轨迹路径
-							Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
-							Pose end_pose = {-0.25f, -0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
+								Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
+								Pose end_pose = {-0.25f, -0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
 
 								// 初始速度和加速度为零
 								Velocity start_vel = {0};
@@ -325,7 +350,10 @@ void Task_Execute(void) {
 			{
 					Joint_readall();
 					motor_init_zero_return(current_pos,zeros,5.0f);
-					
+					if (!check_angle_with_start(ZERO_RETURN)) {
+							task_running = 0;  // 校验失败，停止任务
+							return;  // 退出模式3执行
+					}
 			}
 
 			if(step_mode_3 < STEP_NUM)

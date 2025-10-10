@@ -11,6 +11,9 @@
 #define RAD2DGR 180/PI
 #define False 0
 #define True 1
+#define ANGLE_TOLERANCE 1.0f  // 角度容忍阈值（度），可根据需求调整
+#define BOUNDRY 1
+#define ZERO_RETURN 3
 
 //// 设定关节电机零点初始位置
 //extern float zero_left_ID0;
@@ -67,9 +70,8 @@ extern motor_recv_t MotorA1_recv_group2_id1;
 
 extern motor_recv_t MotorA1_recv_group3_id0;
 extern motor_recv_t MotorA1_recv_group3_id1;
-//extern motor_recv_t MotorA1_recv_group4_id0;
-//extern motor_recv_t MotorA1_recv_group4_id1;
 
+extern uint8_t continuity;
 
 extern uint8_t STOP; // 急停状态
 
@@ -119,5 +121,11 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id);
 void Joint_Full_zero_Control(uint16_t step);
 
 void Joint_readall(void);
+
+/**
+ * @brief 检查当前角度是否与轨迹起点角度一致（在容忍阈值内）
+ * @return 1：角度一致，可执行轨迹；0：角度不一致，需停止任务
+ */
+uint8_t check_angle_with_start(uint8_t mode);
 
 #endif // !JOINT_H

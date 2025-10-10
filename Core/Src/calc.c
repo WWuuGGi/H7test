@@ -21,6 +21,18 @@ float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度
 float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
 Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
+// 初始化多段路径的路点（A→B→C→D）
+Pose waypoints[TOTAL_WAYPOINTS] = {
+    // 点A（起点）
+    {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f},
+    // 点B
+    {0.2f, 0.2f, 0.335f, 0.0f, 0.0f, 0.0f},
+    // 点C
+    {-0.2f, 0.2f, 0.335f, 0.0f, 0.0f, 0.0f},
+    // 点D（终点）
+    {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f}
+};
+uint8_t current_segment = 0;  // 初始执行第0段（A→B）
 
 // 计算五次多项式系数
 static void calculate_poly5_coeff(Poly5Coeff *coeff, 
@@ -52,26 +64,26 @@ static void calculate_poly5_coeff(Poly5Coeff *coeff,
 
 // 基座锚点坐标(全局坐标系)
 const Point4f base_g[CABLE_NUM] = {
-    {-0.397f,  0.324f, 0.820f, 1.0f}, // b1
-    {-0.397f, -0.324f, 0.820f, 1.0f}, // b2
-    {0.397f, -0.324f, 0.820f, 1.0f},  // b3
-    {0.397f,  0.324f, 0.820f, 1.0f},  // b4
-    {-0.397f,  0.324f, 0.169f, 1.0f}, // b5
-    {-0.397f, -0.324f, 0.169f, 1.0f}, // b6
-    {0.397f, -0.324f,  0.169f, 1.0f},  // b7
-    {0.397f,  0.324f,  0.169f, 1.0f}   // b8
+    {-0.397f,  0.328f, 0.820f, 1.0f}, // b1
+    {-0.397f, -0.328f, 0.820f, 1.0f}, // b2
+    {0.397f, -0.328f, 0.820f, 1.0f},  // b3
+    {0.397f,  0.328f, 0.820f, 1.0f},  // b4
+    {-0.397f,  0.328f, 0.169f, 1.0f}, // b5
+    {-0.397f, -0.328f, 0.169f, 1.0f}, // b6
+    {0.397f, -0.328f,  0.169f, 1.0f},  // b7
+    {0.397f,  0.328f,  0.169f, 1.0f}   // b8
 };
 
 // 末端执行器附着点坐标(局部坐标系)
 const Point4f attach_e[CABLE_NUM] = {
-    {-0.05f,  0.05f, -0.05f, 1.0f}, // a1
-    {-0.05f, -0.05f, -0.05f, 1.0f}, // a2
-    {0.05f, -0.05f, -0.05f, 1.0f},  // a3
-    {0.05f,  0.05f, -0.05f, 1.0f},  // a4
-    {-0.05f,  0.05f,  0.05f, 1.0f}, // a5
-    {-0.05f, -0.05f,  0.05f, 1.0f}, // a6
-    {0.05f, -0.05f,  0.05f, 1.0f},  // a7
-    {0.05f,  0.05f,  0.05f, 1.0f}   // a8
+    {-0.05f,  0.045f, -0.05f, 1.0f}, // a1
+    {-0.05f, -0.045f, -0.05f, 1.0f}, // a2
+    {0.05f, -0.045f, -0.05f, 1.0f},  // a3
+    {0.05f,  0.045f, -0.05f, 1.0f},  // a4
+    {-0.045f,  0.05f,  0.05f, 1.0f}, // a5
+    {-0.045f, -0.05f,  0.05f, 1.0f}, // a6
+    {0.045f, -0.05f,  0.05f, 1.0f},  // a7
+    {0.045f,  0.05f,  0.05f, 1.0f}   // a8
 };
 
 
@@ -224,7 +236,7 @@ static void generate_trajectory_and_angles(float32_t t_start, float32_t t_end, f
             // 计算电机角度并存储(仅保留此结果)
             float32_t length_change = current_length - cable_initial_length[c];
             
-						if(c != 0 && c != 3)
+						if(c != 2 && c != 3)
 						{
 							motor_angle[c][i] = length_change / MOTOR_PULLEY_RADIUS / 3.1415926f * 180.0f;
 						}
@@ -265,7 +277,7 @@ static void generate_trajectory_and_angles(float32_t t_start, float32_t t_end, f
             // 计算绳索速度
             motor_omega[c][i] = 0.0f;
             for (uint8_t k = 0; k < 6; k++) {
-							if(c != 0 && c != 3)
+							if(c != 2 && c != 3)
 							{
                 motor_omega[c][i] += -1.0f * jaco[c][k] * current_vel.data[k] / MOTOR_PULLEY_RADIUS;
 							}
@@ -379,7 +391,7 @@ static void calc_zero_return_coeff(Poly5Coeff *coeff,
                                   float32_t t_total) {
     // 边界条件：初始角度=当前角度，初始速度/加速度=0；末端角度=零位，末端速度/加速度=0
     calculate_poly5_coeff(coeff,
-                         current_angle, 0.0f, 0.0f,  // 起点：位置、速度、加速度
+                         current_angle - zero_angle, 0.0f, 0.0f,  // 起点：位置、速度、加速度
                          0.0f,    0.0f, 0.0f,  // 终点：位置、速度、加速度
                          t_total);                    // 总时间
 }

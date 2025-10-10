@@ -84,6 +84,15 @@ extern float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // ¹éÎ»¹ı³ÌÖĞ¸÷Ê±¿ÌµÄÄ
 extern float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // ¹éÎ»¹ı³ÌÖĞ¸÷Ê±¿ÌµÄÄ¿±ê½ÇËÙ¶È(¶È/Ãë)
 extern Poly5Coeff zero_return_coeffs[CABLE_NUM];          // Ã¿¸öµç»úµÄ¹éÎ»¹ì¼£¶àÏîÊ½ÏµÊı
 
+
+#define PATH_SEGMENTS 3  // Â·¾¶¶ÎÊı£¨A¡úB, B¡úC, C¡úD¹²3¶Î£©
+#define TOTAL_WAYPOINTS (PATH_SEGMENTS + 1)  // ×ÜÂ·µãÊıÁ¿£¨A,B,C,D¹²4µã£©
+
+// È«¾Ö±äÁ¿ÉùÃ÷£¨´æ´¢¶à¶ÎÂ·¾¶µÄÂ·µã£©
+extern Pose waypoints[TOTAL_WAYPOINTS];
+extern uint8_t current_segment;  // µ±Ç°Ö´ĞĞµÄÂ·¾¶¶ÎË÷Òı£¨0~PATH_SEGMENTS-1£©
+
+
 // Ä©¶ËÖ´ĞĞÆ÷ÎïÀí²ÎÊı£¨Íâ²¿¿É¼û£©
 extern const float32_t mass_ee;    // Ä©¶ËÖ´ĞĞÆ÷ÖÊÁ¿
 extern const float32_t Ixx_ee;     // xÖá×ª¶¯¹ßÁ¿

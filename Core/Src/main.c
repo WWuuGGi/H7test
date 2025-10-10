@@ -166,6 +166,15 @@ int main(void)
 			 	zero_group4_ID1 = 0.0f;
 			 	zero_init = 0;
 				Joint_Zero_init_Type1();
+				
+				zeros[0] = zero_group1_ID0;
+				zeros[1] = zero_group1_ID1;
+				zeros[2] = zero_group2_ID0;
+				zeros[3] = zero_group2_ID1;
+				zeros[4] = zero_group3_ID0;
+				zeros[5] = zero_group3_ID1;
+				zeros[6] = zero_group4_ID0;
+				zeros[7] = zero_group4_ID1;
 			}
 
 

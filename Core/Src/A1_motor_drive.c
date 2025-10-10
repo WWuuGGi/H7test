@@ -40,6 +40,8 @@ HAL_StatusTypeDef trans_st[4] = {HAL_OK};
 uint32_t err_state;
 uint32_t received;
 
+
+
 // CRC校验位的代码
 uint32_t crc32_core_Ver3(uint32_t *ptr, uint32_t len)
 {
@@ -247,8 +249,16 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 //						HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_RESET);  // 使能发送（根据硬件调整引脚）
 //						break;
 //				}
-				
-				rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 2);
+
+				//memset(recv_buf, 0, 78);  // 78为group1-3的缓冲区长度
+				//rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 5);
+				// 修改为带重试的接收逻辑
+				uint8_t retry = 3;  // 最多重试3次
+				rec_st[group-1] = HAL_ERROR;
+				while (retry-- > 0 && rec_st[group-1] != HAL_OK) {
+						memset(recv_buf, 0, 78);  // 每次重试前清空缓冲区
+						rec_st[group-1] = HAL_UART_Receive(huart, recv_buf, 78, 2);  // 超时10ms
+				}
 				
 				err_state = HAL_UART_GetError(huart);
 				received = 78 - huart->RxXferCount;
@@ -298,12 +308,12 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 			// 2. 硬件使能控制（与原有group4一致）
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_SET);
 			// 发送go协议数据包（RIS_ControlData_t为17字节）
-			trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 2);
+			trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 3);
 		
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_RESET);
 
 			// 3. 接收go协议数据（RIS_MotorData_t为16字节）
-			rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 2);
+			rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 3);
 
 			// 4. 解析接收数据（使用go_protocol的extract_data）
 			// 先将接收缓冲区数据拷贝到MotorData_t的接收结构体
@@ -328,36 +338,36 @@ void motor_relax(void)
 {
 	modify_torque_cmd(&MotorA1_send_group1,0, 0.0f);
 	unitreeA1_rxtx(&huart1,1);
-	HAL_Delay(1);
+	HAL_Delay(5);
 	
 	modify_torque_cmd(&MotorA1_send_group1,1, 0.0f);
 	unitreeA1_rxtx(&huart1,1);
-	HAL_Delay(1);
+	HAL_Delay(5);
 
 	modify_torque_cmd(&MotorA1_send_group2,0, 0.0f);
 	unitreeA1_rxtx(&huart2,2);
-	HAL_Delay(1);	
+	HAL_Delay(5);	
 	
 	modify_torque_cmd(&MotorA1_send_group2,1, 0.0f);
 	unitreeA1_rxtx(&huart2,2);
-	HAL_Delay(1);
+	HAL_Delay(5);
 	
 	
 	modify_torque_cmd(&MotorA1_send_group3,0, 0.0f);
 	unitreeA1_rxtx(&huart8,3);
-	HAL_Delay(1);
+	HAL_Delay(5);
 	
 	modify_torque_cmd(&MotorA1_send_group3,1, 0.0f);
 	unitreeA1_rxtx(&huart8,3);
-	HAL_Delay(1);
+	HAL_Delay(5);
 	
 	go_torque_cmd(&Motor_go_send_group4,0,0.0f);
 	unitreeA1_rxtx(&huart4,4);
-	HAL_Delay(1);
+	HAL_Delay(5);
 	
 	go_torque_cmd(&Motor_go_send_group4,1,0.0f);
 	unitreeA1_rxtx(&huart4,4);
-	HAL_Delay(1);
+	HAL_Delay(5);
 
 
 }
