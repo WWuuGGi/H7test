@@ -346,6 +346,7 @@ void Joint_PW_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omeg
 			unitreeA1_rxtx(huart, group);
 }
 
+
 void Joint_zero_Control(uint8_t group, uint8_t id,float Pos[][STEP_NUM],float Omega[][STEP_NUM],float kp,float kw,uint16_t step)//, float Pos_Back
 {   
 		float target_pos = 0.0f;

@@ -79,12 +79,16 @@ void modify_PW_cmd(motor_send_t *send,uint8_t id, float Pos, float Omega, float 
 
 void modify_changeid_cmd(motor_send_t *send,uint8_t mode);
 
+void modify_mix_cmd(motor_send_t *send,uint8_t id, float Pos, float Omega,float t, float KP, float KW);
+
 /// @brief 用来和电机通讯的代码，将获取的数据存入对应结构体中
 /// @param huart 需要使用的串口，huart1为左侧，6为右侧
 
 void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group);
 
 void motor_relax(void);
+
+
 
 uint32_t rc32_core_Ver3(uint32_t *ptr, uint32_t len);
 

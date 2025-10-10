@@ -123,6 +123,7 @@ void go_pos_cmd(MotorCmd_t *motor_s,uint8_t id,float pos ,float KP, float KW);
 void go_spd_cmd(MotorCmd_t *motor_s,uint8_t id,float spd );
 void go_torque_cmd(MotorCmd_t *motor_s,uint8_t id,float torque);
 void go_pw_cmd(MotorCmd_t *cmd,uint8_t id,float pos,float spd,float kp,float kd);
+void go_mix_cmd(MotorCmd_t *cmd,uint8_t id,float pos,float spd,float t,float kp,float kd);
 #endif
 
 /*

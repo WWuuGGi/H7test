@@ -58,6 +58,7 @@ uint32_t now2;
 uint32_t del_t;
 uint8_t j;
 uint8_t k;
+uint8_t first_zero = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -167,6 +168,8 @@ int main(void)
 			 	zero_init = 0;
 				Joint_Zero_init_Type1();
 				
+				if(first_zero == 0)
+				{
 				zeros[0] = zero_group1_ID0;
 				zeros[1] = zero_group1_ID1;
 				zeros[2] = zero_group2_ID0;
@@ -175,6 +178,8 @@ int main(void)
 				zeros[5] = zero_group3_ID1;
 				zeros[6] = zero_group4_ID0;
 				zeros[7] = zero_group4_ID1;
+				first_zero = 1;
+				}
 			}
 
 //			if (data_logging)

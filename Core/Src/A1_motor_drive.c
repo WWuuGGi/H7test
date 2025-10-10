@@ -153,8 +153,25 @@ void modify_PW_cmd(motor_send_t *send,uint8_t id, float Pos, float Omega, float 
     send->Pos  = 2*PI/360*9.1*Pos;  // 6.2832 = 2 PI // 原先为 6.2832*9.1*2*Pos
 	  //输入的pos是经过减速器的，乘以9.1之后是输出轴的
 	  //这样计算之后，输入函数的pos就是角度值的了，转换成未减速的弧度
-    send->W    = Omega;
+    send->W    = Omega * 9.1f;
     send->T    = 0.0;
+    send->K_P  = KP;
+    send->K_W  = KW;
+}
+
+void modify_mix_cmd(motor_send_t *send,uint8_t id, float Pos, float Omega,float t, float KP, float KW)
+{
+
+    send->hex_len = 34;
+
+    send->mode = 10;
+	  send->id   = id;
+
+    send->Pos  = 2*PI/360*9.1*Pos;  // 6.2832 = 2 PI // 原先为 6.2832*9.1*2*Pos
+	  //输入的pos是经过减速器的，乘以9.1之后是输出轴的
+	  //这样计算之后，输入函数的pos就是角度值的了，转换成未减速的弧度
+    send->W    = Omega * 9.1f;
+    send->T    = t/9.1f;
     send->K_P  = KP;
     send->K_W  = KW;
 }
@@ -307,12 +324,18 @@ void unitreeA1_rxtx(UART_HandleTypeDef *huart, uint8_t group)
 			// 2. 硬件使能控制（与原有group4一致）
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_SET);
 			// 发送go协议数据包（RIS_ControlData_t为17字节）
-			trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 3);
-		
+			//trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 3);
+			uint8_t retry = 3;  // 最多重试3次
+			rec_st[group-1] = HAL_ERROR;
+			while (retry-- > 0 && rec_st[group-1] != HAL_OK) {
+					trans_st[3] = HAL_UART_Transmit(huart, send_buf, sizeof(RIS_ControlData_t), 3);
+					
+					rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 3);
+			}
 //			HAL_GPIO_WritePin(GROUP_PORT_3, GROUP_PIN_3, GPIO_PIN_RESET);
 
 			// 3. 接收go协议数据（RIS_MotorData_t为16字节）
-			rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 3);
+			//rec_st[3] = HAL_UART_Receive(huart, (uint8_t *)&temp.motor_recv_data, sizeof(temp.motor_recv_data), 3);
 
 			// 4. 解析接收数据（使用go_protocol的extract_data）
 			// 先将接收缓冲区数据拷贝到MotorData_t的接收结构体

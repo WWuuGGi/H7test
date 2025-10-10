@@ -37,7 +37,7 @@ void go_torque_cmd(MotorCmd_t *cmd,uint8_t id,float torque)
 	cmd->K_W = 0.0f;
 	cmd->Pos = 0.0f;
 	cmd->W = 0.0f;
-	cmd->T = torque;
+	cmd->T = torque/6.33f;
 }
 	
 void go_pw_cmd(MotorCmd_t *cmd,uint8_t id,float pos,float spd,float kp,float kd)
@@ -49,6 +49,17 @@ void go_pw_cmd(MotorCmd_t *cmd,uint8_t id,float pos,float spd,float kp,float kd)
 	cmd->Pos = pos*6.33f/ 180.0f * 3.1415926f;
 	cmd->W = spd*6.33f;
 	cmd->T = 0.0f;
+}
+
+void go_mix_cmd(MotorCmd_t *cmd,uint8_t id,float pos,float spd,float t,float kp,float kd)
+{
+	cmd->id = id;
+	cmd->mode = 1;
+	cmd->K_P = kp;
+	cmd->K_W = kd;
+	cmd->Pos = pos*6.33f/ 180.0f * 3.1415926f;
+	cmd->W = spd*6.33f;
+	cmd->T = t/6.33f;
 }
 
 /// @brief 将发送给电机的浮点参数转换为定点类型参数
@@ -99,8 +110,8 @@ void extract_data(MotorData_t *motor_r)
 		motor_r->mode = motor_r->motor_recv_data.mode.status;
 		motor_r->Temp = motor_r->motor_recv_data.fbk.temp;
 		motor_r->MError = motor_r->motor_recv_data.fbk.MError;
-		motor_r->W = ((float)motor_r->motor_recv_data.fbk.speed / 256.0f) * 6.28318f * 6.33f;
-		motor_r->T = ((float)motor_r->motor_recv_data.fbk.torque) / 256.0f /6.33f;
+		motor_r->W = ((float)motor_r->motor_recv_data.fbk.speed / 256.0f) * 6.28318f / 6.33f;
+		motor_r->T = ((float)motor_r->motor_recv_data.fbk.torque) / 256.0f * 6.33f;
 		motor_r->Pos = 6.28318f * ((float)motor_r->motor_recv_data.fbk.pos) / 32768.0f * (180/3.1415926f/6.33f);
 		motor_r->footForce = motor_r->motor_recv_data.fbk.force;
 		motor_r->correct = 1;

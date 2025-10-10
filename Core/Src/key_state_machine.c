@@ -225,9 +225,10 @@ void Task_Execute(void) {
 						{
 							// 检查是否所有段都执行完毕
 							if (current_segment >= PATH_SEGMENTS) {
-									task_running = 0;  // 所有段完成，停止任务
-									step_mode_1 = 0;
-									current_segment = 0;  // 重置段索引，便于下次启动
+//									task_running = 0;  // 所有段完成，停止任务
+//									step_mode_1 = 0;
+//									current_segment = 0;  // 重置段索引，便于下次启动
+									Joint_Full_PW_Control(STEP_NUM- 1);
 									break;
 							}
 							zero_group1_ID0 = 0.0f;
