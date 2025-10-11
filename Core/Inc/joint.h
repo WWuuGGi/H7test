@@ -11,8 +11,9 @@
 #define RAD2DGR 180/PI
 #define False 0
 #define True 1
-#define ANGLE_TOLERANCE 5.0f  // 角度容忍阈值（度），可根据需求调整
+#define ANGLE_TOLERANCE 2.0f  // 角度容忍阈值（度），可根据需求调整
 #define BOUNDRY 1
+#define CIRCLE 2
 #define ZERO_RETURN 3
 
 //// 设定关节电机零点初始位置
@@ -121,7 +122,7 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id);
 
 void Joint_Full_zero_Control(uint16_t step);
 
-void Joint_readall(void);
+void Joint_readall(uint8_t mode);
 
 /**
  * @brief 检查当前角度是否与轨迹起点角度一致（在容忍阈值内）

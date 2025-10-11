@@ -46,8 +46,8 @@ I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (../Core/Inc/gom_protocol.h)(0x68E9032B)
 I (../Core/Inc/crc_ccitt.h)(0x68C51102)
 I (D:\keil5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-F (..\Core\Src\calc.c)(0x68E91B2C)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\calc.o --omf_browse h7test\calc.crf --depend h7test\calc.d)
-I (../Core/Inc/calc.h)(0x68E903B6)
+F (..\Core\Src\calc.c)(0x68EA022A)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\calc.o --omf_browse h7test\calc.crf --depend h7test\calc.d)
+I (../Core/Inc/calc.h)(0x68EA0273)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x68D21283)
 I (../Core/Inc/stm32h7xx_hal_conf.h)(0x68D753F3)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h)(0x68D21283)
@@ -93,10 +93,10 @@ I (../Core/Inc/crc_ccitt.h)(0x68C51102)
 I (D:\keil5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (D:\keil5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x6025237E)
-F (..\Core\Src\joint.c)(0x68E9032B)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\joint.o --omf_browse h7test\joint.crf --depend h7test\joint.d)
+F (..\Core\Src\joint.c)(0x68EA1E4C)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\joint.o --omf_browse h7test\joint.crf --depend h7test\joint.d)
 I (D:\keil5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x60252374)
-I (../Core/Inc/joint.h)(0x68E8ACF8)
+I (../Core/Inc/joint.h)(0x68EA21F2)
 I (../Core/Inc/main.h)(0x68D2128A)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x68D21283)
 I (../Core/Inc/stm32h7xx_hal_conf.h)(0x68D753F3)
@@ -139,9 +139,9 @@ I (../Core/Inc/usart.h)(0x68DB385D)
 I (D:\keil5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (../Core/Inc/gom_protocol.h)(0x68E9032B)
 I (../Core/Inc/crc_ccitt.h)(0x68C51102)
-I (../Core/Inc/calc.h)(0x68E903B6)
-F (..\Core\Src\key_state_machine.c)(0x68E8CC46)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\key_state_machine.o --omf_browse h7test\key_state_machine.crf --depend h7test\key_state_machine.d)
-I (../Core/Inc/key_state_machine.h)(0x68E76064)
+I (../Core/Inc/calc.h)(0x68EA0273)
+F (..\Core\Src\key_state_machine.c)(0x68EA1D4C)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\key_state_machine.o --omf_browse h7test\key_state_machine.crf --depend h7test\key_state_machine.d)
+I (../Core/Inc/key_state_machine.h)(0x68EA0132)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x68D21283)
 I (../Core/Inc/stm32h7xx_hal_conf.h)(0x68D753F3)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h)(0x68D21283)
@@ -178,7 +178,7 @@ I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h)(0x68D21283)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h)(0x68D21283)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h)(0x68D21283)
 I (../Core/Inc/main.h)(0x68D2128A)
-I (../Core/Inc/calc.h)(0x68E903B6)
+I (../Core/Inc/calc.h)(0x68EA0273)
 I (../Core/Inc/A1_motor_drive.h)(0x68E9032B)
 I (../Core/Inc/motor_msg.h)(0x689DADC7)
 I (../Core/Inc/usart.h)(0x68DB385D)
@@ -187,7 +187,7 @@ I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (../Core/Inc/gom_protocol.h)(0x68E9032B)
 I (../Core/Inc/crc_ccitt.h)(0x68C51102)
 I (D:\keil5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (../Core/Inc/joint.h)(0x68E8ACF8)
+I (../Core/Inc/joint.h)(0x68EA21F2)
 F (../Core/Src/main.c)(0x68E90B4B)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\main.o --omf_browse h7test\main.crf --depend h7test\main.d)
 I (../Core/Inc/main.h)(0x68D2128A)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x68D21283)
@@ -235,9 +235,9 @@ I (D:\keil5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (../Core/Inc/gom_protocol.h)(0x68E9032B)
 I (../Core/Inc/crc_ccitt.h)(0x68C51102)
 I (D:\keil5\ARM\ARMCC\include\stdlib.h)(0x60252374)
-I (../Core/Inc/joint.h)(0x68E8ACF8)
-I (../Core/Inc/calc.h)(0x68E903B6)
-I (../Core/Inc/key_state_machine.h)(0x68E76064)
+I (../Core/Inc/joint.h)(0x68EA21F2)
+I (../Core/Inc/calc.h)(0x68EA0273)
+I (../Core/Inc/key_state_machine.h)(0x68EA0132)
 F (../Core/Src/gpio.c)(0x68DB385B)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_H7test-IC:\Users\caiyang\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\caiyang\AppData\Local\Arm\Packs\Keil\STM32H7xx_DFP\3.1.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32H743xx -D_RTE_ -DUSE_PWR_LDO_SUPPLY -DUSE_HAL_DRIVER -DSTM32H743xx-o h7test\gpio.o --omf_browse h7test\gpio.crf --depend h7test\gpio.d)
 I (../Core/Inc/gpio.h)(0x68D21287)
 I (../Core/Inc/main.h)(0x68D2128A)

@@ -35,6 +35,7 @@ uint16_t step_mode_3 = 0;
 uint8_t zero_init = 1;
 uint8_t data_logging = 0;
 uint8_t turn = 1;
+uint8_t circle_phase = 0;  // 0:未开始 1:直线到圆弧起点 2:执行圆弧加速 3.执行全速圆弧运动
 /**
   * @brief  初始化按键
   * @param  无
@@ -295,48 +296,151 @@ void Task_Execute(void) {
             //
 					if((step_mode_1 == 0) && (step_mode_3 == 0))
 					{
-							if(step_mode_2 == 0)
-							{
-								//初次进入任务时，把其他标志位清零
-								//step_mode_1 = 0;
-								//step_mode_3 = 0;
-								
-								//初次进入时，计算轨迹路径
-								Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
-								Pose end_pose = {-0.25f, -0.25f, 0.335f, 0.0f, 0.0f, 0.0f};
+								// 阶段1：直线运动到圆弧起点（circle_phase=1）
+								if (circle_phase == 0) {
+										circle_phase = 1;  // 进入直线阶段
+										step_mode_2 = 0;   // 重置步骤计数
 
-								// 初始速度和加速度为零
-								Velocity start_vel = {0};
-								Velocity end_vel = {0};
-								Acceleration start_acc = {0};
-								Acceleration end_acc = {0};
+										// 直线起点：原有点(0,0,0.135)
+										Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
+										// 直线终点：圆弧轨迹的起点（根据圆弧参数计算）
+										Pose end_pose = {0.2f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
 
-								// 或者设置非零的初始和末尾速度
-								// Velocity start_vel = {0.1f, 0.1f, 0, 0, 0, 0};  // 初始有小速度
-								// Velocity end_vel = {0.1f, 0.1f, 0, 0, 0, 0};    // 末尾有小速度
+										// 初始化直线轨迹（5秒内到达圆弧起点）
+										Velocity start_vel = {0};
+										Velocity end_vel = {0};
+										Acceleration start_acc = {0};
+										Acceleration end_acc = {0};
+										cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc, 5.0f);
+								}
 
-								// 初始化CDPR系统
-								//	cdpr_init(&start, &end);
-								cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
-							}
-							
-							if(step_mode_2 < STEP_NUM && task_running)
-							{
-								
-								Joint_Full_PW_Control(step_mode_2);
-								step_mode_2++;
+								// 阶段2：执行圆弧运动（circle_phase=2）
+								else if (circle_phase == 1 && step_mode_2 >= STEP_NUM) {
+										circle_phase = 2;  // 进入圆弧加速
+										step_mode_2 = 0;   // 重置步骤计数
+									
+										//标定零点
+										zero_group1_ID0 = 0.0f;
+										zero_group1_ID1 = 0.0f;
 
-							}
-							else
-							{
-								Joint_Full_PW_Control(step_mode_2 - 1);
-							}
-					}
-					else
-					{
-						motor_relax();
-					}
-            break;
+										zero_group2_ID0 = 0.0f;
+										zero_group2_ID1 = 0.0f;
+
+										zero_group3_ID0 = 0.0f;
+										zero_group3_ID1 = 0.0f;
+
+										zero_group4_ID0 = 0.0f;
+										zero_group4_ID1 = 0.0f;
+										Joint_Zero_init_Type2();
+									
+										Pose center = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
+										// 生成圆弧轨迹（总时间CIRCLE_DURATION秒）
+										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+										0.0f,0.0f,0.0f,2*PI,0.4*PI,0.0f);
+										
+									
+										//轨迹规划检查
+										if (!check_angle_with_start(BOUNDRY)) {
+												task_running = 0;  // 校验失败，停止任务
+												break;  // 退出模式1执行
+											}
+								}
+								else if (circle_phase >= 2 && step_mode_2 >= STEP_NUM)
+								{
+										circle_phase = 3;  // 进入圆弧阶段
+										step_mode_2 = 0;   // 重置步骤计数
+									
+										//标定零点
+										
+//										Joint_Full_PW_Control(STEP_NUM- 1);
+										zero_group1_ID0 = MotorA1_recv_group1_id0.Pos;
+										zero_group1_ID1 = MotorA1_recv_group1_id1.Pos;
+										zero_group2_ID0 = MotorA1_recv_group2_id0.Pos;
+										zero_group2_ID1 = MotorA1_recv_group2_id1.Pos;
+										zero_group3_ID0 = MotorA1_recv_group3_id0.Pos;
+										zero_group3_ID1 = MotorA1_recv_group3_id1.Pos;
+										zero_group4_ID0 = Motor_go_recv_group4_id0.Pos;
+										zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
+										
+
+										
+										Pose center = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
+										// 生成圆弧轨迹（总时间CIRCLE_DURATION秒）
+										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+										0.0f,0.4*PI,0.0f,2*PI,0.4*PI,0.0f);
+										
+										//轨迹规划检查
+										if (!check_angle_with_start(CIRCLE)) {
+												task_running = 0;  // 校验失败，停止任务
+												break;  // 退出模式1执行
+											}
+								}
+
+								// 执行当前阶段的轨迹
+								if (step_mode_2 < STEP_NUM && task_running) {
+										Joint_Full_PW_Control(step_mode_2);
+										step_mode_2++;
+								} 
+								else 
+								{
+										// 若圆弧阶段结束，可选择循环执行或停止
+										Joint_Full_PW_Control(STEP_NUM - 1);
+								}
+						}
+						else
+						{
+								motor_relax();
+						}
+						break;
+//										if(step_mode_2 == 0)
+//										{
+//											//初次进入任务时，把其他标志位清零
+//											//step_mode_1 = 0;
+//											//step_mode_3 = 0;
+//											
+//											//初次进入时，计算轨迹路径
+//											Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
+//											Pose end_pose = {0.2f, 0.2f, 0.335f, 0.0f, 0.0f, 0.0f};
+
+//											// 初始速度和加速度为零
+//											Velocity start_vel = {0};
+//											Velocity end_vel = {0};
+//											Acceleration start_acc = {0};
+//											Acceleration end_acc = {0};
+
+//											// 或者设置非零的初始和末尾速度
+//											// Velocity start_vel = {0.1f, 0.1f, 0, 0, 0, 0};  // 初始有小速度
+//											// Velocity end_vel = {0.1f, 0.1f, 0, 0, 0, 0};    // 末尾有小速度
+
+//											// 初始化CDPR系统
+//											//	cdpr_init(&start, &end);
+//											cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
+//										}
+//										
+//										if(step_mode_2 < STEP_NUM && task_running)
+//										{
+//											
+//											Joint_Full_PW_Control(step_mode_2);
+//											step_mode_2++;
+
+//										}
+//										else
+//										{
+//											Joint_Full_PW_Control(STEP_NUM - 1);
+//											if (step_mode_2 >= STEP_NUM) 
+//											{
+//													step_mode_2 = 0;  // 重置当前段的步计数器
+//													mode2_stage = MODE2_CIRCLE_MOTION;  // 切换到下一段
+//											}
+//										}
+//										break;					
+//						}
+//					}
+//					else
+//					{
+//						motor_relax();
+//					}
+//            break;
         default:
             // 默认模式处理
             //current_mode = 0;
@@ -351,7 +455,7 @@ void Task_Execute(void) {
 			{
 					step_mode_1 =0;
 					step_mode_2 = 0;
-					Joint_readall();
+					Joint_readall(0);
 					motor_init_zero_return(current_pos,zeros,5.0f);
 					if (!check_angle_with_start(ZERO_RETURN)) {
 							task_running = 0;  // 校验失败，停止任务

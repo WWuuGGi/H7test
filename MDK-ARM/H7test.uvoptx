@@ -120,8 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>?</Name>
-        </SetRegEntry>
+          <Name></Name>        </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
@@ -157,9 +156,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>260</LineNumber>
+          <LineNumber>314</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134233228</Address>
+          <Address>134233662</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -168,14 +167,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Core\Src\key_state_machine.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\H7test\../Core/Src/key_state_machine.c\260</Expression>
+          <Expression>\\\../Core/Src/key_state_machine.c\314</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>257</LineNumber>
+          <LineNumber>338</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134233204</Address>
+          <Address>134233800</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -184,23 +183,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\Core\Src\key_state_machine.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\H7test\../Core/Src/key_state_machine.c\257</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>356</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134233430</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Core\Src\key_state_machine.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\H7test\../Core/Src/key_state_machine.c\356</Expression>
+          <Expression>\\H7test\../Core/Src/key_state_machine.c\338</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -434,7 +417,7 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>3</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\Core\Src\calc.c</PathWithFileName>

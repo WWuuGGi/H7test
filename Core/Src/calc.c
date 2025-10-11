@@ -308,7 +308,7 @@ static void generate_trajectory_and_angles(float32_t t_start, float32_t t_end, f
     }
 }
 
-static void generate_trajectory_circle(float32_t t_start, float32_t t_end, float32_t t_step,const Pose* center,float circle_radius,
+void generate_trajectory_circle(float32_t t_start, float32_t t_end, float32_t t_step,const Pose* center,float circle_radius,
                                          const float start_theta, const float start_vel, const float start_acc,
                                          const float end_theta, const float end_vel, const float end_acc) {
     float32_t t_total = t_end - t_start;

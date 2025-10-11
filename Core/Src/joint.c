@@ -538,8 +538,10 @@ float Joint_ReadCurrentPos(uint8_t group, uint8_t id) {
 
 }
 
-void Joint_readall(void)
+void Joint_readall(uint8_t mode)
 {
+	if(mode == 0)//0 代表分段间隙速度是0的种类
+	{
 					modify_speed_cmd(&MotorA1_send_group1,0, 0.0f);
 					unitreeA1_rxtx(&huart1,1);
 					current_pos[0] = MotorA1_recv_group1_id0.Pos;
@@ -586,6 +588,19 @@ void Joint_readall(void)
 					current_pos[7] = Motor_go_recv_group4_id1.Pos;
 					
 					HAL_Delay(5);
+				}
+	else	
+	{
+		//Joint_Full_PW_Control(STEP_NUM- 1);
+		current_pos[0] = MotorA1_recv_group1_id0.Pos;		
+		current_pos[1] = MotorA1_recv_group1_id1.Pos;
+		current_pos[2] = MotorA1_recv_group2_id0.Pos;
+		current_pos[3] = MotorA1_recv_group2_id1.Pos;
+		current_pos[4] = MotorA1_recv_group3_id0.Pos;
+		current_pos[5] = MotorA1_recv_group3_id1.Pos;
+		current_pos[6] = Motor_go_recv_group4_id0.Pos;
+		current_pos[7] = Motor_go_recv_group4_id1.Pos;
+	}
 
 }
 
@@ -597,7 +612,7 @@ void Joint_readall(void)
 uint8_t check_angle_with_start(uint8_t mode) {
     
     // 1. 读取当前所有电机的实际角度
-    Joint_readall();
+
 		uint8_t orders[CABLE_NUM] = {5,4,7,6,1,0,3,2};
     
 		//b1 - G3 ID 1
@@ -613,6 +628,28 @@ uint8_t check_angle_with_start(uint8_t mode) {
 	switch(mode)
 	{
 		case BOUNDRY:
+				Joint_readall(0);
+				traj_start_angles[0] = motor_angle[orders[0]][0] + zero_group1_ID0;
+				traj_start_angles[1] = motor_angle[orders[1]][0] + zero_group1_ID1;
+				traj_start_angles[2] = motor_angle[orders[2]][0] + zero_group2_ID0;
+				traj_start_angles[3] = motor_angle[orders[3]][0] + zero_group2_ID1;
+				traj_start_angles[4] = motor_angle[orders[4]][0] + zero_group3_ID0;
+				traj_start_angles[5] = motor_angle[orders[5]][0] + zero_group3_ID1;
+				traj_start_angles[6] = motor_angle[orders[6]][0] + zero_group4_ID0;
+				traj_start_angles[7] = motor_angle[orders[7]][0] + zero_group4_ID1;
+		
+				for (uint8_t c = 0; c < CABLE_NUM; c++) {
+						float32_t angle_diff = fabsf(current_pos[c] - traj_start_angles[c]);
+						if (angle_diff > ANGLE_TOLERANCE) {
+								// 单个电机角度偏差超限，打印错误信息;
+								continuity = 0;
+								return 0;  // 校验失败
+						}
+				}
+				break;
+				
+		case CIRCLE:
+				Joint_readall(1);
 				traj_start_angles[0] = motor_angle[orders[0]][0] + zero_group1_ID0;
 				traj_start_angles[1] = motor_angle[orders[1]][0] + zero_group1_ID1;
 				traj_start_angles[2] = motor_angle[orders[2]][0] + zero_group2_ID0;
@@ -632,6 +669,7 @@ uint8_t check_angle_with_start(uint8_t mode) {
 				}
 				break;
 		case ZERO_RETURN:
+				Joint_readall(0);
 				traj_start_angles[0] = zero_return_angle[0][0] + zeros[0];
 				traj_start_angles[1] = zero_return_angle[1][0] + zeros[1];
 				traj_start_angles[2] = zero_return_angle[2][0] + zeros[2];

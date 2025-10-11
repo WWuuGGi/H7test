@@ -65,7 +65,9 @@ extern uint16_t step_mode_1;
 extern uint16_t step_mode_2;
 extern uint16_t step_mode_3;
 extern uint8_t zero_init;
-extern uint8_t data_logging;
+//extern uint8_t data_logging;
+
+extern uint8_t circle_phase;  // 0:未开始 1:直线到圆弧起点 2:执行圆弧运动
 
 // 函数声明
 void Key_Init(void);
