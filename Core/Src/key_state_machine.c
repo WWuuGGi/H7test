@@ -32,10 +32,12 @@ static void Key_HandleEvents(void);
 uint16_t step_mode_1 = 0;
 uint16_t step_mode_2 = 0;
 uint16_t step_mode_3 = 0;
+uint16_t step_mode_4 = 0;
 uint8_t zero_init = 1;
-uint8_t data_logging = 0;
+//uint8_t data_logging = 0;
 uint8_t turn = 1;
 uint8_t circle_phase = 0;  // 0:未开始 1:直线到圆弧起点 2:执行圆弧加速 3.执行全速圆弧运动
+Pose center = {0.0f, 0.0f, 0.235f, 0.0f, 0.0f, 0.0f};
 /**
   * @brief  初始化按键
   * @param  无
@@ -162,6 +164,7 @@ static void Key_HandleEvents(void) {
             step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
+						step_mode_4 = 0;
 						current_segment = 0;
 						//调成零力矩模式，等待拖拽回中
 						//motor_relax();
@@ -173,6 +176,7 @@ static void Key_HandleEvents(void) {
 						step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
+						step_mode_4 = 0;
 						zero_init = 1;
 						current_segment = 0;
 						//调成零力矩模式，等待接收指令
@@ -194,14 +198,18 @@ static void Key_HandleEvents(void) {
             // 切换到模式2
             current_mode = 2;
         }
+				else if (key1.event == KEY_EVENT_LONG_PRESS)
+				{
+						current_mode = 4;
+				}
     }
 		if (key3.event == KEY_EVENT_CLICK) {
 						// 切换到模式3
 						current_mode = 3;
-						task_running = 0;
 						step_mode_1 = 0;
 						step_mode_2 = 0;
 						step_mode_3 = 0;
+						step_mode_4 = 0;
 						}
 		
 
@@ -220,7 +228,7 @@ void Task_Execute(void) {
         case 1:
             // 模式1的任务逻辑
             //
-					if((step_mode_2 == 0) && (step_mode_3 == 0))
+					if(step_mode_2 == 0 && step_mode_4 == 0)
 					{
 						if(step_mode_1 == 0)
 						{
@@ -294,7 +302,7 @@ void Task_Execute(void) {
         case 2:
             // 模式2的任务逻辑
             //
-					if((step_mode_1 == 0) && (step_mode_3 == 0))
+					if(step_mode_1 == 0)
 					{
 								// 阶段1：直线运动到圆弧起点（circle_phase=1）
 								if (circle_phase == 0) {
@@ -304,7 +312,7 @@ void Task_Execute(void) {
 										// 直线起点：原有点(0,0,0.135)
 										Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
 										// 直线终点：圆弧轨迹的起点（根据圆弧参数计算）
-										Pose end_pose = {0.2f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
+										Pose end_pose = {0.1f, 0.0f, 0.235f, 0.0f, 0.0f, 0.0f};
 
 										// 初始化直线轨迹（5秒内到达圆弧起点）
 										Velocity start_vel = {0};
@@ -333,26 +341,28 @@ void Task_Execute(void) {
 										zero_group4_ID1 = 0.0f;
 										Joint_Zero_init_Type2();
 									
-										Pose center = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
 										// 生成圆弧轨迹（总时间CIRCLE_DURATION秒）
-										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
-										0.0f,0.0f,0.0f,2*PI,0.4*PI,0.0f);
+//										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+//										0.0f,0.0f,0.0f,2*PI,0.4*PI,0.0f);
 										
+										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+										0.0f,0.0f,0.0f,2*PI,0.0f,0.0f);
 									
 										//轨迹规划检查
-										if (!check_angle_with_start(BOUNDRY)) {
+										if (!check_angle_with_start(BOUNDRY)) 
+											{
 												task_running = 0;  // 校验失败，停止任务
 												break;  // 退出模式1执行
 											}
 								}
 								else if (circle_phase >= 2 && step_mode_2 >= STEP_NUM)
 								{
-										circle_phase = 3;  // 进入圆弧阶段
+										circle_phase++;  // 进入圆弧阶段
 										step_mode_2 = 0;   // 重置步骤计数
 									
 										//标定零点
 										
-//										Joint_Full_PW_Control(STEP_NUM- 1);
+										Joint_Full_PW_Control(STEP_NUM- 1);
 										zero_group1_ID0 = MotorA1_recv_group1_id0.Pos;
 										zero_group1_ID1 = MotorA1_recv_group1_id1.Pos;
 										zero_group2_ID0 = MotorA1_recv_group2_id0.Pos;
@@ -363,12 +373,16 @@ void Task_Execute(void) {
 										zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
 										
 
-										
-										Pose center = {0.0f, 0.0f, 0.335f, 0.0f, 0.0f, 0.0f};
+										if(circle_phase == 3)
+										{
+
 										// 生成圆弧轨迹（总时间CIRCLE_DURATION秒）
-										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
-										0.0f,0.4*PI,0.0f,2*PI,0.4*PI,0.0f);
+//										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+//										0.0f,0.4*PI,0.0f,2*PI,0.4*PI,0.0f);
 										
+										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.1f,
+										0.0f,0.0f,0.0f,2*PI,0.0f,0.0f);
+										}
 										//轨迹规划检查
 										if (!check_angle_with_start(CIRCLE)) {
 												task_running = 0;  // 校验失败，停止任务
@@ -441,6 +455,81 @@ void Task_Execute(void) {
 //						motor_relax();
 //					}
 //            break;
+				case 4:
+					// 模式1的任务逻辑
+            //
+					if(step_mode_2 == 0 && step_mode_1 == 0)
+					{
+						if(step_mode_4 == 0)
+						{
+							// 检查是否所有段都执行完毕
+							if (current_segment_line >= PATH_SEGMENTS_LINE) {
+//									task_running = 0;  // 所有段完成，停止任务
+//									step_mode_1 = 0;
+//									current_segment = 0;  // 重置段索引，便于下次启动
+									Joint_Full_PW_Control(STEP_NUM- 1);
+									break;
+							}
+							zero_group1_ID0 = 0.0f;
+							zero_group1_ID1 = 0.0f;
+
+							zero_group2_ID0 = 0.0f;
+							zero_group2_ID1 = 0.0f;
+
+							zero_group3_ID0 = 0.0f;
+							zero_group3_ID1 = 0.0f;
+
+							zero_group4_ID0 = 0.0f;
+							zero_group4_ID1 = 0.0f;
+							Joint_Zero_init_Type2();
+							
+							// 当前段的起点 = 上一段的终点（首段起点为waypoints[0]）
+							Pose start_pose = waypoints_line[current_segment_line];
+							// 当前段的终点 = 下一个路点
+							Pose end_pose = waypoints_line[current_segment_line + 1];
+							
+							// 初始速度和加速度为零
+							Velocity start_vel = {0};
+							Velocity end_vel = {0};
+							Acceleration start_acc = {0};
+							Acceleration end_acc = {0};
+							cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc,5.0f);
+						
+							// 执行角度校验：当前角度是否与轨迹起点一致
+							if (!check_angle_with_start(BOUNDRY)) {
+									task_running = 0;  // 校验失败，停止任务
+									break;  // 退出模式1执行
+							}
+							
+						}
+						
+						if(step_mode_4 < STEP_NUM && task_running)
+						{
+							
+							Joint_Full_PW_Control(step_mode_4);
+//							Joint_Full_Position_Control(step_mode_1);
+//							modify_speed_cmd(&MotorA1_send_group1,1,0.5f);
+//							//modify_torque_cmd(&MotorA1_send_group1,1,0.75f);
+//							unitreeA1_rxtx(&huart1,1);
+							step_mode_4++;
+
+						}
+						else
+						{
+							// 当前段执行完毕，准备切换到下一段
+							if (step_mode_4 >= STEP_NUM) {
+									step_mode_4 = 0;  // 重置当前段的步计数器
+									current_segment_line++;  // 切换到下一段
+							}
+							Joint_Full_PW_Control(STEP_NUM- 1);
+						}
+					}
+					else
+					{
+						motor_relax();
+					}
+            break;
+					
         default:
             // 默认模式处理
             //current_mode = 0;

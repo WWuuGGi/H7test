@@ -59,6 +59,7 @@ uint32_t del_t;
 uint8_t j;
 uint8_t k;
 uint8_t first_zero = 0;
+KeyTypeDef k1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -148,7 +149,7 @@ int main(void)
 		//cstate = Key_GetTaskState();
 		
 		now1 = HAL_GetTick();
-		
+		k1 = Key1_scope();
 		//cmode = Key_GetCurrentMode();
 	
 		if (task_running) {
@@ -170,15 +171,15 @@ int main(void)
 				
 				if(first_zero == 0)
 				{
-				zeros[0] = zero_group1_ID0;
-				zeros[1] = zero_group1_ID1;
-				zeros[2] = zero_group2_ID0;
-				zeros[3] = zero_group2_ID1;
-				zeros[4] = zero_group3_ID0;
-				zeros[5] = zero_group3_ID1;
-				zeros[6] = zero_group4_ID0;
-				zeros[7] = zero_group4_ID1;
-				first_zero = 1;
+					zeros[0] = zero_group1_ID0;
+					zeros[1] = zero_group1_ID1;
+					zeros[2] = zero_group2_ID0;
+					zeros[3] = zero_group2_ID1;
+					zeros[4] = zero_group3_ID0;
+					zeros[5] = zero_group3_ID1;
+					zeros[6] = zero_group4_ID0;
+					zeros[7] = zero_group4_ID1;
+					first_zero = 1;
 				}
 			}
 

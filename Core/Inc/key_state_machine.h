@@ -24,7 +24,7 @@
 
 
 // 按键参数定义
-#define KEY_LONG_PRESS_MS 1500    // 长按判定时间(ms)
+#define KEY_LONG_PRESS_MS 1000    // 长按判定时间(ms)
 #define KEY_DOUBLE_CLICK_MS 300   // 双击判定时间间隔(ms)
 #define KEY_DEBOUNCE_MS 20        // 按键消抖时间（过滤机械抖动，约10-20ms）
 
@@ -64,6 +64,7 @@ extern uint8_t current_mode;    // 当前模式
 extern uint16_t step_mode_1;
 extern uint16_t step_mode_2;
 extern uint16_t step_mode_3;
+extern uint16_t step_mode_4;
 extern uint8_t zero_init;
 //extern uint8_t data_logging;
 

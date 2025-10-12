@@ -437,22 +437,41 @@ void Joint_Full_Position_Control(uint16_t step)
 
 void Joint_Full_PW_Control(uint16_t step)
 {
-	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.025f, 0.10f, step);//0.025  0.1
 	
-	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.025f, 0.10f, step);
 
-	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.025f, 0.10f, step);
 	
-	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.025f, 0.10f, step);
 
-	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.025f, 0.10f, step);
 	
-	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.025f, 0.12f, step);
+	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.025f, 0.10f, step);
 	
-	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.24f, 0.001f, step);
+	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.30f, 0.001f, step);//0.30  0.001
 	
-	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.24f, 0.001f, step);
+	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.30f, 0.001f, step);
 }
+
+//void Joint_Full_T_Control(uint16_t step)
+//{
+//	Joint_PW_Control(1, 0, motor_angle, motor_omega, 0.020f, 0.10f, step);
+//	
+//	Joint_PW_Control(1, 1, motor_angle, motor_omega, 0.020f, 0.10f, step);
+
+//	Joint_PW_Control(2, 0, motor_angle, motor_omega, 0.020f, 0.10f, step);
+//	
+//	Joint_PW_Control(2, 1, motor_angle, motor_omega, 0.020f, 0.10f, step);
+
+//	Joint_PW_Control(3, 0, motor_angle, motor_omega, 0.025f, 0.10f, step);
+//	
+//	Joint_PW_Control(3, 1, motor_angle, motor_omega, 0.025f, 0.10f, step);
+//	
+//	Joint_PW_Control(4, 0, motor_angle, motor_omega, 0.21f, 0.001f, step);
+//	
+//	Joint_PW_Control(4, 1, motor_angle, motor_omega, 0.21f, 0.001f, step);
+//}
 
 void Joint_Full_zero_Control(uint16_t step)
 {

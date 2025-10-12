@@ -85,13 +85,17 @@ extern float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目
 extern Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
 
-#define PATH_SEGMENTS 10  // 路径段数（A→B, B→C, C→D共3段）
+#define PATH_SEGMENTS 6  // 路径段数（A→B, B→C, C→D共3段）
 #define TOTAL_WAYPOINTS (PATH_SEGMENTS + 1)  // 总路点数量（A,B,C,D共4点）
+
+#define PATH_SEGMENTS_LINE 3  // 路径段数（A→B, B→C, C→D共3段）
+#define TOTAL_WAYPOINTS_LINE (PATH_SEGMENTS_LINE + 1)  // 总路点数量（A,B,C,D共4点）
 
 // 全局变量声明（存储多段路径的路点）
 extern Pose waypoints[TOTAL_WAYPOINTS];
 extern uint8_t current_segment;  // 当前执行的路径段索引（0~PATH_SEGMENTS-1）
-
+extern uint8_t current_segment_line;
+extern Pose waypoints_line[TOTAL_WAYPOINTS_LINE];
 
 // 末端执行器物理参数（外部可见）
 extern const float32_t mass_ee;    // 末端执行器质量
