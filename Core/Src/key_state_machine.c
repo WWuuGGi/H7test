@@ -37,7 +37,8 @@ uint8_t zero_init = 1;
 //uint8_t data_logging = 0;
 uint8_t turn = 1;
 uint8_t circle_phase = 0;  // 0:未开始 1:直线到圆弧起点 2:执行圆弧加速 3.执行全速圆弧运动
-Pose center = {0.0f, 0.0f, 0.235f, 0.0f, 0.0f, 0.0f};
+Pose center = {0.0f, 0.0f, 0.435f, 0.0f, 0.0f, 0.0f};
+float r_1 = 0.1f;
 /**
   * @brief  初始化按键
   * @param  无
@@ -312,14 +313,14 @@ void Task_Execute(void) {
 										// 直线起点：原有点(0,0,0.135)
 										Pose start_pose = {0.0f, 0.0f, 0.135f, 0.0f, 0.0f, 0.0f};
 										// 直线终点：圆弧轨迹的起点（根据圆弧参数计算）
-										Pose end_pose = {0.1f, 0.0f, 0.235f, 0.0f, 0.0f, 0.0f};
+										Pose end_pose = {0.1f, 0.0f, 0.435f, 0.0f, 0.0f, 0.0f};
 
 										// 初始化直线轨迹（5秒内到达圆弧起点）
 										Velocity start_vel = {0};
 										Velocity end_vel = {0};
 										Acceleration start_acc = {0};
 										Acceleration end_acc = {0};
-										cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc, 5.0f);
+										cdpr_init(&start_pose, &start_vel, &start_acc, &end_pose, &end_vel, &end_acc, 90.0f);
 								}
 
 								// 阶段2：执行圆弧运动（circle_phase=2）
@@ -345,7 +346,7 @@ void Task_Execute(void) {
 //										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
 //										0.0f,0.0f,0.0f,2*PI,0.4*PI,0.0f);
 										
-										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
+										generate_trajectory_circle(0.0f, 90.0f,0.02f,&center,r_1,
 										0.0f,0.0f,0.0f,2*PI,0.0f,0.0f);
 									
 										//轨迹规划检查
@@ -373,16 +374,16 @@ void Task_Execute(void) {
 										zero_group4_ID1 = Motor_go_recv_group4_id1.Pos;
 										
 
-										if(circle_phase == 3)
-										{
+//										if(circle_phase == 3)
+//										{
 
 										// 生成圆弧轨迹（总时间CIRCLE_DURATION秒）
 //										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.2f,
 //										0.0f,0.4*PI,0.0f,2*PI,0.4*PI,0.0f);
 										
-										generate_trajectory_circle(0.0f, 5.0f,0.02f,&center,0.1f,
+										generate_trajectory_circle(0.0f, 90.0f,0.02f,&center,r_1,
 										0.0f,0.0f,0.0f,2*PI,0.0f,0.0f);
-										}
+										//}
 										//轨迹规划检查
 										if (!check_angle_with_start(CIRCLE)) {
 												task_running = 0;  // 校验失败，停止任务

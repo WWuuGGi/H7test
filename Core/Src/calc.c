@@ -17,9 +17,13 @@ float32_t motor_angle[CABLE_NUM][STEP_NUM]; // 电机角度轨迹(角度)
 float32_t motor_omega[CABLE_NUM][STEP_NUM];
 Poly5Coeff coeffs[6];                       // 多项式系数(复用，不存储完整轨迹)
 
-float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
-float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
-Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
+float32_t zero_return_angle[CABLE_NUM][8];  // 归位过程中各时刻的目标角度(度)
+float32_t zero_return_omega[CABLE_NUM][8]; // 归位过程中各时刻的目标角速度(度/秒)
+Poly5Coeff zero_return_coeffs[8];          // 每个电机的归位轨迹多项式系数
+
+//float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
+//float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
+//Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
 Poly5Coeff circle_coeffs;
 

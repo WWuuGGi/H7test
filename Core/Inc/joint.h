@@ -11,7 +11,7 @@
 #define RAD2DGR 180.0f/PI
 #define False 0
 #define True 1
-#define ANGLE_TOLERANCE 3.0f  // 角度容忍阈值（度），可根据需求调整
+#define ANGLE_TOLERANCE 5.0f  // 角度容忍阈值（度），可根据需求调整
 #define BOUNDRY 1
 #define CIRCLE 2
 #define ZERO_RETURN 3

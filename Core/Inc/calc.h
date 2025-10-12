@@ -67,7 +67,7 @@ static void calculate_poly5_coeff(Poly5Coeff *coeff,
 
 // 系统参数宏定义
 #define CABLE_NUM 8       // 绳索数量
-#define STEP_NUM 251      // 轨迹总步数（0.02s步长，5s共251个点）
+#define STEP_NUM 4501      // 轨迹总步数（0.02s步长，90s共4501个点）
 #define MOTOR_PULLEY_RADIUS 0.0475f  // 电机 pulley 半径，单位：米 (47.5mm)
 #define GO_PULLEY_RADIUS 0.0510f  // 电机 pulley 半径，单位：米 (51.0mm)
 
@@ -80,9 +80,14 @@ static void calculate_poly5_coeff(Poly5Coeff *coeff,
 extern float32_t cable_initial_length[CABLE_NUM];  // 每条绳索的初始长度(零点参考)
 extern float32_t motor_angle[CABLE_NUM][STEP_NUM]; // 电机角度轨迹(角度)
 extern float32_t motor_omega[CABLE_NUM][STEP_NUM]; // 电机角速度(角度)
-extern float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
-extern float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
+
+extern float32_t zero_return_angle[CABLE_NUM][8];  // 归位过程中各时刻的目标角度(度)
+extern float32_t zero_return_omega[CABLE_NUM][8]; // 归位过程中各时刻的目标角速度(度/秒)
 extern Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
+
+//extern float32_t zero_return_angle[CABLE_NUM][STEP_NUM];  // 归位过程中各时刻的目标角度(度)
+//extern float32_t zero_return_omega[CABLE_NUM][STEP_NUM]; // 归位过程中各时刻的目标角速度(度/秒)
+//extern Poly5Coeff zero_return_coeffs[CABLE_NUM];          // 每个电机的归位轨迹多项式系数
 
 
 #define PATH_SEGMENTS 6  // 路径段数（A→B, B→C, C→D共3段）
